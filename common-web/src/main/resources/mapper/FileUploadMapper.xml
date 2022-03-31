@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.byn.web.mapper.FileUploadMapper">
+
+    <resultMap id="FileUploadMap" type="com.byn.web.entity.FileUpload">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="url" property="url" />
+        <result column="createTime" property="createTime" />
+        <result column="profilx" property="profilx" />
+        <result column="type" property="type" />
+        <result column="attach_group_id" property="attachGroupId" />
+    </resultMap>
+
+    <sql id="fileUploadSql">
+        id, name, url, createTime, profilx, attach_group_id, type
+    </sql>
+
+    <insert id="addFile">
+
+
+        insert into fileUpload (name, url, createTime, profilx, attach_group_id, type)
+        values (#{name}, #{url}, #{createTime}, #{profilx}, #{attachGroupId}, #{type})
+    </insert>
+
+    <select id="selectByAttachGroupId" resultMap="FileUploadMap">
+        select <include refid="fileUploadSql" /> from fileUpload
+        where attach_group_id = #{attachGroupId}
+    </select>
+
+    <delete id="deleteByAttachGroupId">
+        delete from fileUpload
+        where attach_group_id = #{attachGroupId}
+    </delete>
+
+</mapper>

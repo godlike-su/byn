@@ -1,0 +1,23 @@
+# 此处更改不得上传
+spring:
+  profile: dev
+  application:
+    name: byn-gateway
+  cloud:
+    nacos:
+      # 指定nacos访问地址
+      discovery:
+        server-addr: 106.55.254.121:8848
+      config:
+        server-addr: 106.55.254.121:8848 #Nacos作为配置中心地址
+        file-extension: yaml #指定yaml格式的配置
+        group: DEV # 读取指定分组下的配置文件
+
+# log
+logging.level.com.byn.gateway: error
+
+server:
+  port: 5001
+  servlet:
+    context-path: /
+

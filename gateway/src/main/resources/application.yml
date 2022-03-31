@@ -1,0 +1,4 @@
+#spring.main.allow-bean-definition-overriding: true
+
+# log
+logging.level.com.example.gateway: error

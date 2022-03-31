@@ -1,0 +1,24 @@
+# 此处更改不得上传
+spring:
+  profile: dev
+  cloud:
+    nacos:
+      # 指定nacos访问地址,需要先安装nacos
+      discovery:
+        server-addr: 106.55.254.121:8848
+      # config
+      config:
+        server-addr: 106.55.254.121:8848 #Nacos作为配置中心地址
+        file-extension: yaml #指定yaml格式的配置
+        group: DEV # 读取指定分组下的配置文件
+  application:
+    name: byn-client
+
+
+server:
+  port: 8081
+
+
+
+
+

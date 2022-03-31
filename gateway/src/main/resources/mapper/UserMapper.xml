@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.byn.gateway.dao.UserDao">
+
+    <resultMap id="RoleMap" type="com.byn.gateway.entity.Role">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="name_zh" property="nameZh" />
+    </resultMap>
+
+    <resultMap id="UserMap" type="com.byn.gateway.entity.User">
+        <id column="id" property="userId" />
+        <result column="username" property="userName" />
+        <result column="password" property="password" />
+        <collection property="roles" javaType="list" ofType="com.byn.gateway.entity.Role">
+            <id column="id" property="id" />
+            <result column="name" property="name" />
+            <result column="name_zh" property="nameZh" />
+        </collection>
+    </resultMap>
+
+    <select id="loadUserByUsername" resultMap="UserMap">
+        select id, username, password from `user` u
+        where u.username = #{name}
+    </select>
+    <select id="loadUserByUserId" resultMap="UserMap">
+        select id, username from `user` u
+        where u.id = #{userId}
+    </select>
+
+    <select id="getRolesByUid" resultMap="RoleMap">
+        SELECT r.id, r.name, r.name_zh FROM `user` u
+        LEFT JOIN user_role ur ON u.id = ur.uid
+        LEFT JOIN role r ON r.id = ur.rid
+        WHERE u.id = #{id}
+    </select>
+
+    <select id="getRolesByUidAndRname" resultMap="RoleMap">
+        SELECT r.id, r.name, r.name_zh FROM `user` u
+        LEFT JOIN user_role ur ON u.id = ur.uid
+        LEFT JOIN role r ON r.id = ur.rid
+        WHERE u.id = #{uId} and r.name = #{rName}
+    </select>
+
+</mapper>

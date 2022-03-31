@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.byn.web.mapper.UserMapper">
+
+    <resultMap id="RoleMap" type="com.byn.web.entity.Role">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="name_zh" property="nameZh"/>
+    </resultMap>
+
+    <resultMap id="UserMap" type="com.byn.web.entity.User">
+        <id column="id" property="userId"/>
+        <result column="username" property="userName"/>
+        <result column="password" property="password"/>
+        <result column="enabled" property="enabled"/>
+        <result column="accountNonExpired" property="accountNonExpired"/>
+        <result column="accountNonLocked" property="accountNonLocked"/>
+        <result column="credentialsNonExpired" property="credentialsNonExpired"/>
+        <result column="credentialsNonExpired" property="credentialsNonExpired"/>
+        <result column="wxAppid" property="wxAppid"/>
+        <result column="wxUnionid" property="wxUnionid"/>
+        <result column="sex" property="sex"/>
+        <result column="qqid" property="qqid"/>
+        <result column="qq" property="qq"/>
+        <result column="qqFlag" property="qqFlag"/>
+        <result column="qqName" property="qqName"/>
+        <result column="email" property="email"/>
+        <result column="emailFlag" property="emailFlag"/>
+        <result column="phone" property="phone"/>
+        <result column="thumb" property="thumb"/>
+        <result column="timeCreate" property="timeCreate"/>
+        <result column="timeUpdate" property="timeUpdate"/>
+        <result column="timeLogin" property="timeLogin"/>
+        <result column="studentID" property="studentID"/>
+        <result column="school" property="school"/>
+        <result column="profession" property="profession"/>
+        <result column="introduction" property="introduction"/>
+        <collection property="roles" javaType="list" ofType="com.byn.web.entity.Role">
+            <id column="id" property="id"/>
+            <result column="name" property="name"/>
+            <result column="name_zh" property="nameZh"/>
+        </collection>
+    </resultMap>
+
+    <sql id="BaseList">
+        id
+        , username, password, wxAppid, wxUnionid
+    </sql>
+
+    <insert id="register">
+        insert into `user`
+        (
+        <if test="userName != null">
+            username,
+        </if>
+        <if test="password != null">
+            password,
+        </if>
+        <if test="wxAppid != null">
+            wxAppid,
+        </if>
+        <if test="wxUnionid != null">
+            wxUnionid,
+        </if>
+        <if test="email != null">
+            email,
+        </if>
+        <if test="emailFlag != null">
+            emailFlag,
+        </if>
+        <if test="phone != null">
+            phone,
+        </if>
+        <if test="phoneFlag != null">
+            phoneFlag,
+        </if>
+        <if test="thumb != null">
+            thumb,
+        </if>
+        <if test="timeCreate != null">
+            timeCreate,
+        </if>
+        <if test="timeUpdate != null">
+            timeUpdate,
+        </if>
+        <if test="timeLogin != null">
+            timeLogin,
+        </if>
+        <if test="studentID != null">
+            studentID,
+        </if>
+        <if test="school != null">
+            school,
+        </if>
+        <if test="profession != null">
+            profession,
+        </if>
+        <if test="introduction != null">
+            introduction,
+        </if>
+        <if test="userId != null">
+            id
+        </if>
+        <if test="sex != null">
+            sex
+        </if>
+        )
+        values(
+        <if test="userName != null">
+            #{userName},
+        </if>
+        <if test="password != null">
+            #{password},
+        </if>
+        <if test="wxAppid != null">
+            #{wxAppid},
+        </if>
+        <if test="wxUnionid != null">
+            #{wxUnionid},
+        </if>
+        <if test="email != null">
+            #{email},
+        </if>
+        <if test="emailFlag != null">
+            #{emailFlag},
+        </if>
+        <if test="phone != null">
+            #{phone},
+        </if>
+        <if test="phoneFlag != null">
+            #{phoneFlag},
+        </if>
+        <if test="thumb != null">
+            #{thumb},
+        </if>
+        <if test="timeCreate != null">
+            #{timeCreate},
+        </if>
+        <if test="timeUpdate != null">
+            #{timeUpdate},
+        </if>
+        <if test="timeLogin != null">
+            #{timeLogin},
+        </if>
+        <if test="studentID != null">
+            #{studentID},
+        </if>
+        <if test="school != null">
+            #{school},
+        </if>
+        <if test="profession != null">
+            #{profession},
+        </if>
+        <if test="introduction != null">
+            #{introduction},
+        </if>
+        <if test="userId != null">
+            #{userId}
+        </if>
+        <if test="sex != null">
+            #{sex}
+        </if>
+        )
+
+    </insert>
+
+    <update id="saveUser">
+        update `user`
+        <set>
+            <if test="userName != null and userName!=''">
+                username = #{userName},
+            </if>
+            <if test="password != null and passworrd!=''">
+                password = #{password},
+            </if>
+            <if test="wxAppid != null and wxAppid != ''">
+                wxAppid = #{wxAppid},
+            </if>
+            <if test="wxUnionid != null and wxUnionid != ''">
+                wxUnionid = #{wxUnionid},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="emailFlag != null and emailFlag != ''">
+                emailFlag = #{emailFlag},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="phoneFlag != null and phoneFlag != ''">
+                phoneFlag = #{phoneFlag},
+            </if>
+            <if test="thumb != null and thumb != ''">
+                thumb = #{thumb},
+            </if>
+            <if test="timeUpdate != null">
+                timeUpdate = #{timeUpdate},
+            </if>
+            <if test="timeLogin != null">
+                timeLogin = #{timeLogin},
+            </if>
+            <if test="studentID != null and studentID != ''">
+                studentID = #{studentID},
+            </if>
+            <if test="school != null and school != ''">
+                school = #{school},
+            </if>
+            <if test="profession != null and profession != ''">
+                profession = #{profession},
+            </if>
+            <if test="introduction != null and introduction != ''">
+                introduction = #{introduction},
+            </if>
+            <if test="sex != null and sex != ''">
+                sex = #{sex},
+            </if>
+        </set>
+        where id = #{userId}
+    </update>
+
+    <select id="loadUserByUsername" resultMap="UserMap">
+        select id, username, password
+        from `user` u
+        where u.username = #{name}
+    </select>
+
+    <select id="getRolesByUid" resultMap="RoleMap">
+        SELECT r.*
+        FROM `user` u
+                 LEFT JOIN user_role ur ON u.id = ur.uid
+                 LEFT JOIN role r ON r.id = ur.rid
+        WHERE u.userId = #{id}
+    </select>
+
+    <select id="loadUserByWxUnionid" resultMap="UserMap">
+        select
+        <include refid="BaseList"/>
+        from `user`
+        where
+        wxUnionid = #{wxUnionid}
+    </select>
+    <select id="loadUserByWxAppid" resultMap="UserMap">
+        select
+        <include refid="BaseList"/>
+        from `user`
+        where
+        wxAppid = #{wxAppid}
+    </select>
+
+</mapper>
