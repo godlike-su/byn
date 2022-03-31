@@ -11,6 +11,7 @@ import com.byn.web.mapper.FileUploadMapper;
 import com.byn.web.service.DocumentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,7 +37,9 @@ public class DocumentServiceImpl implements DocumentService {
     @Autowired
     private FileUploadMapper fileUploadMapper;
 
-    private final String absoluteUrl = "D:/JavaProject/byn/file/";
+//    private final String absoluteUrl = "../file/";
+    @Value("${file.uploadFolder}")
+    private String absoluteUrl;
 
     @Override
     public String uploadFile(MultipartFile file) {

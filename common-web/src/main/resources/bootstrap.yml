@@ -22,6 +22,10 @@ byn:
 mybatis:
   mapper-locations: classpath:mapper/*.xml
 
+file:
+  staticAccessPath: /home/byn/byn
+  uploadFolder: /home/byn/byn
+
 
 server:
   port: 8088
