@@ -16,6 +16,7 @@
         <module>common</module>
         <module>common-web</module>
         <module>openfeign</module>
+        <module>sartup</module>
     </modules>
 
     <properties>

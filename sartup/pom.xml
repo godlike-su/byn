@@ -9,12 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>client</artifactId>
-
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
+    <artifactId>sartup</artifactId>
 
     <dependencies>
         <dependency>
@@ -50,6 +45,11 @@
         <dependency>
             <groupId>org.example</groupId>
             <artifactId>common-web</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <!-- 自定义通用feign -->
@@ -156,7 +156,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <!-- 指定该Main Class为全局的唯一入口 -->
-                    <mainClass>com.byn.client.ClienetApplication</mainClass>
+                    <mainClass>com.byn.sartup.StartupApplication</mainClass>
                     <layout>ZIP</layout>
                 </configuration>
                 <executions>
@@ -169,4 +169,10 @@
             </plugin>
         </plugins>
     </build>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
+
 </project>
