@@ -30,8 +30,8 @@ public class DocumentController {
     @Autowired
     private DocumentService documentService;
 
-    @PostMapping("/uploadFile")
-    @ApiOperation(value = "文件上传,默认路径")
+//    @PostMapping("/uploadFile")
+//    @ApiOperation(value = "文件上传,默认路径")
     public MessageResult uploadFile(MultipartFile file) {
         String attachGroupId = documentService.uploadFile(file);
         return new MessageResult(attachGroupId);
