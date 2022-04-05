@@ -6,9 +6,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.byn.common.exception.GenerallyeException;
 import com.byn.common.exception.ParamerException;
 import com.byn.common.session.entity.SessionUserDetail;
+import com.byn.common.util.ObjectTransform;
 import com.byn.common.util.SnowFlakeUtil;
 import com.byn.web.entity.User;
 import com.byn.web.fo.LoginFo;
+import com.byn.web.fo.UserFO;
 import com.byn.web.fo.WXloginFo;
 import com.byn.web.mapper.UserMapper;
 import com.byn.web.service.LoginService;
@@ -128,7 +130,8 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public int saveUser(User user, SessionUserDetail sessionUser) {
+    public int saveUser(UserFO userFO, SessionUserDetail sessionUser) {
+        User user = ObjectTransform.transform(userFO, User.class);
         user.setUserId(sessionUser.getUserId());
         user.setTimeUpdate(new Date());
         return userMapper.saveUser(user);

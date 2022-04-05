@@ -7,7 +7,7 @@
 
 	<Properties>
 		<Property name="LOG_HOME">./logs</Property>
-		<Property name="MODLUE_NAME">byn-web-common</Property>
+		<Property name="MODLUE_NAME">byn-sartup</Property>
 		<Property name="INFO_FILE_NAME">${MODLUE_NAME}_info.log</Property>
 		<Property name="INFO_ARCHIVE_NAME">${MODLUE_NAME}_info_%d{yyyyMMdd}.log
 		</Property>
@@ -18,7 +18,7 @@
 		<property name="ROLLING_INTERVAL">1</property>
 		<!-- 日志代码是区分各业务模块不同日志类型的唯一标识，由服务代码+日志类型代码2部分，共4位字符构成。合作管理服务：A9 ，日志类型代码统一填00 -->
 		<property name="LOG_CODE">A8001</property>
-		
+
 		<!-- 获取jvm 启动参数，日志级别，es输出地址和端口 -->
 		<property name="LOG_LEVEL">${sys:LOG_LEVEL:-info}</property>
 		<property name="LOGSTASH_IP">${sys:LOGSTASH_IP:-10.1.4.52}</property>
@@ -49,7 +49,7 @@
 			<!-- 只记录info和warn级别信息 -->
 			<Filters>
 				<!-- DENY 不容许error级别以上写入该文件 NEUTRAL 中立， 上下两个条件组合，取中间值 -->
-				<!-- <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL" 
+				<!-- <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"
 					/> -->
 				<ThresholdFilter level="info" onMatch="ACCEPT"
 					onMismatch="DENY" />
@@ -75,7 +75,7 @@
 					onMismatch="DENY" />
 			</Filters>
 		</RollingRandomAccessFile>
-        
+
 	</appenders>
 
 	<!--然后定义logger，只有定义了logger并引入的appender，appender才会生效 -->

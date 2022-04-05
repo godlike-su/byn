@@ -22,16 +22,16 @@ import javax.servlet.http.HttpServletResponse;
  * @Version: 1.0
  * @Description:
  */
-@RestController()
+@RestController
 @Api(value = "文件操作", tags = "文件操作")
-@RequestMapping("${byn.mapping.name}${byn.mapping.prefix}")
+@RequestMapping("${byn.mapping.name}/web/document")
 public class DocumentController {
 
     @Autowired
     private DocumentService documentService;
 
-    @PostMapping("/uploadFile")
-    @ApiOperation(value = "文件上传,默认路径")
+//    @PostMapping("/uploadFile")
+//    @ApiOperation(value = "文件上传,默认路径")
     public MessageResult uploadFile(MultipartFile file) {
         String attachGroupId = documentService.uploadFile(file);
         return new MessageResult(attachGroupId);
