@@ -134,20 +134,28 @@ public class GatewayFilterConfig implements GlobalFilter, Ordered {
     private User getUser(String jwtToken) {
         // 判断路径是否需要用户权限，暂时未做，也可以判断redis是否存有该key
         // 解析token，判断是否超时了
-        JwtVerity jwtVerity = new JwtVerity();
-        boolean verity = jwtVerity.verity(tokenKey, jwtToken);
-        if (!verity) {
+        try {
+            JwtVerity jwtVerity = new JwtVerity();
+            boolean verity = jwtVerity.verity(tokenKey, jwtToken);
+            if (!verity) {
+                return null;
+            }
+            JWT jwt = JWTUtil.parseToken(jwtToken);
+            JWTPayload payload = jwt.getPayload();
+            String id = (String) payload.getClaim(userId);
+            String name = (String) payload.getClaim(userName);
+            // 根据取出userId，去数据库或redis查询，是否有该数据
+            User user = new User();
+            user.setUserId(id);
+            user.setUserName(name);
+            if (ObjectUtils.isEmpty(user)) {
+                return null;
+            }
+            return user;
+        } catch (Exception e) {
+            log.error("jwt解析错误: ", e);
             return null;
         }
-        JWT jwt = JWTUtil.parseToken(jwtToken);
-        JWTPayload payload = jwt.getPayload();
-        String id = (String) payload.getClaim(userId);
-        // 根据取出userId，去数据库或redis查询，是否有该数据
-        User user = userDao.loadUserByUserId(id);
-        if (ObjectUtils.isEmpty(user)) {
-            return null;
-        }
-        return user;
     }
 
 

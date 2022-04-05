@@ -4,6 +4,7 @@ import com.byn.common.session.entity.SessionUserDetail;
 import com.byn.common.session.service.SessionUser;
 import com.byn.web.entity.User;
 import com.byn.web.fo.LoginFo;
+import com.byn.web.fo.UserFO;
 import com.byn.web.fo.WXloginFo;
 import com.byn.web.service.LoginService;
 import com.result.BaseResult;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Api(value = "登录、注销", tags = "登录")
-@RequestMapping("${byn.mapping.name}${byn.mapping.prefix}")
+@RequestMapping("${byn.mapping.name}/web/login")
 public class LoginController {
 
     @Autowired
@@ -44,9 +45,9 @@ public class LoginController {
 
     @PostMapping("/login")
     @ApiOperation(value = "普通登录")
-    public MessageResult login(@RequestBody @Validated LoginFo loginFo) {
+    public SingleResult login(@RequestBody @Validated LoginFo loginFo) {
         String login = loginService.login(loginFo);
-        return new MessageResult(login);
+        return new SingleResult(login);
     }
 
     @PostMapping("/wxLogin")
@@ -57,10 +58,10 @@ public class LoginController {
 
 
     @PostMapping("/saveUser")
-    @ApiOperation(value = "更改用户信息，不包括密码")
-    public BaseResult saveUser(@RequestBody User user) {
+    @ApiOperation(value = "更改自己的信息，不包括密码")
+    public BaseResult saveUser(@RequestBody @Validated UserFO userFO) {
         SessionUserDetail sessionUser = this.sessionUser.getSessionUser();
-        loginService.saveUser(user, sessionUser);
+        loginService.saveUser(userFO, sessionUser);
         return new BaseResult(ReturnStatus.STATUS_OK);
     }
 
