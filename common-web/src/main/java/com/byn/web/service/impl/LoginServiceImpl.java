@@ -1,5 +1,6 @@
 package com.byn.web.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.SecureUtil;
 import cn.hutool.jwt.JWTUtil;
 import com.alibaba.fastjson.JSONObject;
@@ -56,6 +57,19 @@ public class LoginServiceImpl implements LoginService {
     @Value("${wx.grant_type}")
     private String grantType;
 
+
+    /**
+     * 请求头 用户id
+     */
+    @Value("${jwt.userId}")
+    private String userId;
+
+    /**
+     * 请求头 用户名
+     */
+    @Value("${jwt.userName}")
+    private String userName;
+
     private static final String BYN_AUTHORIZATION = "byn_authorization";
     private static final long TIMEOUT_SECOND = 86400;
 
@@ -76,10 +90,14 @@ public class LoginServiceImpl implements LoginService {
         }
         // 生成JWT token
         Map<String, Object> map = new HashMap<>();
-        map.put("userId", user.getUserId());
-        map.put("userName", user.getUserName());
-
-        return JWTUtil.createToken(map, tokenKey.getBytes());
+        map.put(userId, user.getUserId());
+        map.put(userName, user.getUserName());
+        String token = JWTUtil.createToken(map, tokenKey.getBytes());
+        String uuid = IdUtil.randomUUID();
+        // 将token存入redis
+        RedisUtil redisUtil = new RedisUtil();
+        redisUtil.hset(BYN_AUTHORIZATION, uuid, token, TIMEOUT_SECOND);
+        return uuid;
     }
 
     @Override
@@ -104,10 +122,13 @@ public class LoginServiceImpl implements LoginService {
          *  errcode	number	错误码 errmsg	string	错误信息
          */
         String wxAppid = jsonObject.getString("openid");
+        String sessionKey = jsonObject.getString("session_key");
+        RedisUtil redisUtil = new RedisUtil();
         User user = userMapper.loadUserByWxAppid(wxAppid);
+        Map<String, Object> map = new HashMap<>();
         // 查询不到用户
         if(ObjectUtils.isEmpty(user)) {
-            // 注册一个用户，只注册用户id
+            // 注册一个用户
             user = new User();
             user.setWxAppid(wxAppid);
             user.setUserId(String.valueOf(SnowFlakeUtil.getId()));
@@ -117,15 +138,22 @@ public class LoginServiceImpl implements LoginService {
             userMapper.register(user);
             User data = new User();
             data.setUserId(user.getUserId());
-            return new SingleResult(data, ReturnStatus.STATUS_NOUSER, "用户未注册，跳转注册界面，返回用户id");
+            map.put(userId, user.getUserId());
+            map.put(userName, user.getUserName());
+            String token = JWTUtil.createToken(map, tokenKey.getBytes());
+            redisUtil.hset(BYN_AUTHORIZATION, sessionKey, token, TIMEOUT_SECOND);
+            return new SingleResult(sessionKey, ReturnStatus.STATUS_NOUSER, "用户信息不全，需要补充用户信息，已返回token");
         } else if(StringUtils.isEmpty(user.getUserName())) {
-            User data = new User();
-            data.setUserId(user.getUserId());
-            return new SingleResult(data, ReturnStatus.STATUS_NOUSER, "用户未注册，跳转注册界面，返回用户id");
+            map.put(userId, user.getUserId());
+            map.put(userName, user.getUserName());
+            String token = JWTUtil.createToken(map, tokenKey.getBytes());
+            redisUtil.hset(BYN_AUTHORIZATION, sessionKey, token, TIMEOUT_SECOND);
+            return new SingleResult(sessionKey, ReturnStatus.STATUS_NOUSER, "用户信息不全，需要补充用户信息，已返回token");
         }
-        String sessionKey = jsonObject.getString("session_key");
-        RedisUtil redisUtil = new RedisUtil();
-        redisUtil.hset(BYN_AUTHORIZATION, sessionKey, TIMEOUT_SECOND);
+        map.put(userId, user.getUserId());
+        map.put(userName, user.getUserName());
+        String token = JWTUtil.createToken(map, tokenKey.getBytes());
+        redisUtil.hset(BYN_AUTHORIZATION, sessionKey, token, TIMEOUT_SECOND);
         return new SingleResult(sessionKey, ReturnStatus.STATUS_OK, "登录成功，已返回token");
     }
 

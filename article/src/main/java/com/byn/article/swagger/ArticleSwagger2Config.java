@@ -1,4 +1,4 @@
-package com.byn.client.swagger;
+package com.byn.article.swagger;
 
 import com.github.xiaoymin.swaggerbootstrapui.annotations.EnableSwaggerBootstrapUI;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +9,7 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * @author Tian
@@ -16,14 +17,15 @@ import springfox.documentation.spring.web.plugins.Docket;
  * @Date 2021/11/4 13:57
  */
 @Configuration
+@EnableSwagger2
 @EnableSwaggerBootstrapUI
-public class ClientSwagger2Config {
+public class ArticleSwagger2Config {
 
     @Bean
-    public Docket createClientManageApi() {
-        return new Docket(DocumentationType.SWAGGER_2).groupName("client")
+    public Docket createArticleManageApi() {
+        return new Docket(DocumentationType.SWAGGER_2).groupName("文章分组")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.byn.client"))
+                .apis(RequestHandlerSelectors.basePackage("com.byn.article"))
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(apiInfo());

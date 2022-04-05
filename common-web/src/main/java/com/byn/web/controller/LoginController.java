@@ -45,9 +45,9 @@ public class LoginController {
 
     @PostMapping("/login")
     @ApiOperation(value = "普通登录")
-    public MessageResult login(@RequestBody @Validated LoginFo loginFo) {
+    public SingleResult login(@RequestBody @Validated LoginFo loginFo) {
         String login = loginService.login(loginFo);
-        return new MessageResult(login);
+        return new SingleResult(login);
     }
 
     @PostMapping("/wxLogin")

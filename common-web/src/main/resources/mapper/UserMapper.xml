@@ -27,6 +27,7 @@
         <result column="email" property="email"/>
         <result column="emailFlag" property="emailFlag"/>
         <result column="phone" property="phone"/>
+        <result column="phoneFlag" property="phoneFlag"/>
         <result column="thumb" property="thumb"/>
         <result column="timeCreate" property="timeCreate"/>
         <result column="timeUpdate" property="timeUpdate"/>

@@ -1,4 +1,4 @@
-package com.byn.client.fo;
+package com.byn.article.fo;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
