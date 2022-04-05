@@ -1,6 +1,5 @@
 package com.byn.web.controller;
 
-import com.byn.common.session.entity.SessionUserDetail;
 import com.byn.common.session.service.SessionUser;
 import com.byn.web.fo.UserFO;
 import com.byn.web.service.UserService;
@@ -32,8 +31,7 @@ public class UserController {
     @PostMapping("/getMyInformation")
     @ApiOperation(value = "获取自己的信息")
     public SingleResult<UserVO> getMyInformation() {
-        SessionUserDetail sessionUser = this.sessionUser.getSessionUser();
-        UserVO myInformation = userService.getMyInformation(sessionUser);
+        UserVO myInformation = userService.getMyInformation(this.sessionUser.getSessionUser());
         return new SingleResult<>(myInformation);
     }
 
