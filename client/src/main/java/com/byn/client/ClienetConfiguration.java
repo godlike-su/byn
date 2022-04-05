@@ -1,6 +1,8 @@
 package com.byn.client;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -10,10 +12,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @Version: 1.0
  * @Description: 前台页面主要显示接口
  */
-@EnableSwagger2
 @Configuration
-public class ClienetApplication {
+@ComponentScan(value = {"com.byn.client"})
+@MapperScan(value = {"com.byn.client.mapper"})
+public class ClienetConfiguration {
     public static void main(String[] args) {
-        SpringApplication.run(ClienetApplication.class, args);
+        SpringApplication.run(ClienetConfiguration.class, args);
     }
 }

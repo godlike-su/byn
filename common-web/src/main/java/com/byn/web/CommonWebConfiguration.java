@@ -1,6 +1,7 @@
 package com.byn.web;
 
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -9,7 +10,8 @@ import org.springframework.context.annotation.Configuration;
  * @Version: 1.0
  * @Description:
  */
-@MapperScan("com.byn.web.mapper")
 @Configuration
-public class CommonWebApplication {
+@ComponentScan(value = {"com.byn.web"})
+@MapperScan(value = {"com.byn.web.mapper"})
+public class CommonWebConfiguration {
 }

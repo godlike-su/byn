@@ -3,6 +3,7 @@ package com.byn.web.service;
 import com.byn.common.session.entity.SessionUserDetail;
 import com.byn.web.entity.User;
 import com.byn.web.fo.LoginFo;
+import com.byn.web.fo.UserFO;
 import com.byn.web.fo.WXloginFo;
 import com.result.MessageResult;
 import com.result.SingleResult;
@@ -37,5 +38,5 @@ public interface LoginService {
      * @param sessionUser
      * @return
      */
-    int saveUser(User user, SessionUserDetail sessionUser);
+    int saveUser(UserFO user, SessionUserDetail sessionUser);
 }

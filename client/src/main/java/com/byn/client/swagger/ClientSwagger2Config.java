@@ -17,10 +17,10 @@ import springfox.documentation.spring.web.plugins.Docket;
  */
 @Configuration
 @EnableSwaggerBootstrapUI
-public class AppSwagger2Config {
+public class ClientSwagger2Config {
 
     @Bean
-    public Docket createAppManageApi() {
+    public Docket createClientManageApi() {
         return new Docket(DocumentationType.SWAGGER_2).groupName("client")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.byn.client"))
@@ -31,7 +31,7 @@ public class AppSwagger2Config {
 
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("用户类")
+        return new ApiInfoBuilder().title("文章类")
                 .description("swagger Restful API文档")
                 .version("1.0.0").build();
     }

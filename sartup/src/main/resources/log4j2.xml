@@ -7,7 +7,7 @@
 
 	<Properties>
 		<Property name="LOG_HOME">./logs</Property>
-		<Property name="MODLUE_NAME">byn-web-common</Property>
+		<Property name="MODLUE_NAME">byn-sartup</Property>
 		<Property name="INFO_FILE_NAME">${MODLUE_NAME}_info.log</Property>
 		<Property name="INFO_ARCHIVE_NAME">${MODLUE_NAME}_info_%d{yyyyMMdd}.log
 		</Property>
