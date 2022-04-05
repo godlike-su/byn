@@ -49,11 +49,19 @@ public class DocumentController {
     }
 
     @GetMapping("/downloadFile")
-    @ApiOperation(value = "文件下载")
+    @ApiOperation(value = "文件下载，以文件的形式下载")
     public void downloadFile(@RequestParam("attachGroupId") String attachGroupId
             , HttpServletResponse response) {
         documentService.downloadFile(attachGroupId, response);
     }
+
+    @GetMapping("/downloadFileByImage")
+    @ApiOperation(value = "文件下载，以图片形式显示")
+    public void downloadFileByImage(@RequestParam("attachGroupId") String attachGroupId
+            , HttpServletResponse response) {
+        documentService.downloadFileByImage(attachGroupId, response);
+    }
+
 
     @PostMapping("/clearFile")
     @ApiOperation(value = "删除文件")

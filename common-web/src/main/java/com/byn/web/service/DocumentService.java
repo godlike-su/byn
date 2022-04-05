@@ -31,6 +31,14 @@ public interface DocumentService {
      */
     void downloadFile(String attachGroupId, HttpServletResponse response);
 
+    /**
+     * 下载文件，图片形式
+     *
+     * @param attachGroupId
+     * @param response
+     */
+    void downloadFileByImage(String attachGroupId, HttpServletResponse response);
+
 
     /**
      * cleard文件
