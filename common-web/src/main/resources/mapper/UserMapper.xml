@@ -48,6 +48,13 @@
         , username, password, wxAppid, wxUnionid
     </sql>
 
+    <sql id="BaseListUserInformation">
+        id,username,password,sex,birthday
+             ,qqFlag,qqName
+             ,email,emailFlag,phone,phoneFlag,thumb
+             ,level,timeCreate,timeUpdate,timeLogin,studentID,school,profession
+    </sql>
+
     <insert id="register">
         insert into `user`
         (
@@ -248,5 +255,66 @@
         where
         wxAppid = #{wxAppid}
     </select>
+
+    <select id="getUser" resultMap="UserMap">
+        select
+            <include refid="BaseListUserInformation" />
+        from `user`
+        <where>
+            <if test="userId != null and userId!=''">
+                id = #{userId}
+            </if>
+            <if test="userName != null and userName!=''">
+                and username = #{userName}
+            </if>
+            <if test="password != null and passworrd!=''">
+                and password = #{password}
+            </if>
+            <if test="wxAppid != null and wxAppid != ''">
+                and wxAppid = #{wxAppid}
+            </if>
+            <if test="wxUnionid != null and wxUnionid != ''">
+                and wxUnionid = #{wxUnionid}
+            </if>
+            <if test="email != null and email != ''">
+                and email = #{email}
+            </if>
+            <if test="emailFlag != null and emailFlag != ''">
+                and emailFlag = #{emailFlag}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+            <if test="phoneFlag != null and phoneFlag != ''">
+                and phoneFlag = #{phoneFlag}
+            </if>
+            <if test="thumb != null and thumb != ''">
+                and thumb = #{thumb}
+            </if>
+            <if test="timeUpdate != null">
+                and timeUpdate = #{timeUpdate}
+            </if>
+            <if test="timeLogin != null">
+                and timeLogin = #{timeLogin}
+            </if>
+            <if test="studentID != null and studentID != ''">
+                and studentID = #{studentID}
+            </if>
+            <if test="school != null and school != ''">
+                and school = #{school}
+            </if>
+            <if test="profession != null and profession != ''">
+                and profession = #{profession}
+            </if>
+            <if test="introduction != null and introduction != ''">
+                and introduction = #{introduction}
+            </if>
+            <if test="sex != null and sex != ''">
+                and sex = #{sex}
+            </if>
+        </where>
+        LIMIT 1
+    </select>
+
 
 </mapper>
