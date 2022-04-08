@@ -3,7 +3,6 @@ package com.byn.gateway.filter;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTPayload;
 import cn.hutool.jwt.JWTUtil;
-import com.byn.gateway.dao.UserDao;
 import com.byn.gateway.entity.User;
 import com.byn.gateway.util.JwtVerity;
 import com.byn.gateway.util.RedisUtil;
@@ -11,7 +10,6 @@ import com.github.pagehelper.util.StringUtil;
 import com.result.ErrorResult;
 import com.result.ReturnStatus;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -38,8 +36,6 @@ import java.util.function.Consumer;
 @Component
 @Slf4j
 public class GatewayFilterConfig implements GlobalFilter, Ordered {
-    @Autowired
-    private UserDao userDao;
 
     @Value("${gateway.white.url}")
     private String[] whiteUrl;

@@ -144,6 +144,8 @@ public class LoginServiceImpl implements LoginService {
             redisUtil.hset(BYN_AUTHORIZATION, sessionKey, token, TIMEOUT_SECOND);
             return new SingleResult(sessionKey, ReturnStatus.STATUS_NOUSER, "用户信息不全，需要补充用户信息，已返回token");
         } else if(StringUtils.isEmpty(user.getUserName())) {
+            user.setTimeLogin(new Date());
+            userMapper.register(user);
             map.put(userId, user.getUserId());
             map.put(userName, user.getUserName());
             String token = JWTUtil.createToken(map, tokenKey.getBytes());

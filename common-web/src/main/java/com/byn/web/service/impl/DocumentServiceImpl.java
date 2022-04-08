@@ -5,6 +5,7 @@ import cn.hutool.core.util.IdUtil;
 import com.byn.common.exception.DataNullException;
 import com.byn.common.exception.GenerallyeException;
 import com.byn.common.exception.ParamerException;
+import com.byn.common.util.UrlParse;
 import com.byn.web.entity.FileUpload;
 import com.byn.web.fo.DownloadFileFo;
 import com.byn.web.mapper.FileUploadMapper;
@@ -86,6 +87,44 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
+    public void downloadFileByImage(String attachGroupId, HttpServletResponse response) {
+        // 根据文件id查找文件信息
+        FileUpload fileUpload = fileUploadMapper.selectByAttachGroupId(attachGroupId);
+        if (ObjectUtils.isEmpty(fileUpload)) {
+            throw new ParamerException("查找不到该文件！");
+        }
+        File file = new File(absoluteUrl + fileUpload.getUrl() + fileUpload.getProfilx());
+        if (!file.exists()) {
+            throw new DataNullException("该文件不存在！");
+        }
+
+        String filename = filenameEncoding(fileUpload.getName());
+        // 告知浏览器文件的大小
+        response.addHeader("Content-Length", "" + file.length());
+        // 设置对应文件的头文件
+        UrlParse urlParse = new UrlParse();
+        String suffix = urlParse.urlSuffix(filename);
+        response.setContentType(urlParse.getContentType(suffix));
+        response.addHeader("Content-Disposition", "attachment;fileName=" + filename);
+        response.addHeader("Pargam", "no-cache");
+        response.addHeader("Cache-Control", "no-cache");
+        byte[] buffer = new byte[1024];
+        try (FileInputStream fis = new FileInputStream(file);
+             BufferedInputStream bis = new BufferedInputStream(fis)) {
+            OutputStream os = response.getOutputStream();
+
+            int i = bis.read(buffer);
+            while (i != -1) {
+                os.write(buffer, 0, i);
+                i = bis.read(buffer);
+            }
+        } catch (Exception e) {
+            log.error("下载文件出错:", e);
+            throw new GenerallyeException("下载文件出错!");
+        }
+    }
+
+    @Override
     public int cleardFile(DownloadFileFo fo) {
         // 根据文件id查找文件信息
         FileUpload fileUpload = fileUploadMapper.selectByAttachGroupId(fo.getAttachGroupId());
@@ -127,13 +166,13 @@ public class DocumentServiceImpl implements DocumentService {
         String format = DateUtil.format(new Date(), "yyyyMMdd");
         String filePath = format + "/";
         switch (used) {
-            case "1":
+            case "0":
                 filePath = "thumb/" + format + "/";
                 break;
-            case "2":
+            case "1":
                 filePath = "analysis/" + format + "/";
                 break;
-            case "3":
+            default:
                 filePath = "other/" + format + "/";
                 break;
         }

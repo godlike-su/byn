@@ -1,7 +1,7 @@
 package com.byn.common;
 
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @Author: `sujinwang`
@@ -9,9 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @Version: 1.0
  * @Description:
  */
-@Configurable
-@ComponentScan(
-        basePackages = {"com.byn.common.exception", "com.byn.common.session"}
-)
+@Configuration
+@ComponentScan(basePackages = {"com.byn.common"})
 public class CommonConfigurer {
 }

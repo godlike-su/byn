@@ -1,4 +1,4 @@
-package com.byn.web.fo;
+package com.byn.web.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @Author: `sujinwang`
@@ -14,8 +15,8 @@ import java.io.Serializable;
  * @Description:
  */
 @Data
-@ApiModel("修改用户信息fo")
-public class UserFO implements Serializable {
+@ApiModel("用户信息VO")
+public class UserVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,11 +25,10 @@ public class UserFO implements Serializable {
     @ApiModelProperty(value = "用户名")
     private String userName;
     @ApiModelProperty(value = "性别")
-    @Pattern(regexp = "^[0-1]{0,1}", message = "性别输入不正确")
     private String sex;
     @ApiModelProperty(value = "email")
     private String email;
-    @ApiModelProperty(value = "email")
+    @ApiModelProperty(value = "emailFlag")
     private String emailFlag;
     @ApiModelProperty(value = "手机")
     private String phone;
@@ -41,6 +41,12 @@ public class UserFO implements Serializable {
     private String introduction;
     @ApiModelProperty(value = "头像文件id")
     private String thumb;
+    @ApiModelProperty(value = "最后登录时间")
+    private Date timeLogin;
+    @ApiModelProperty(value = "创建时间")
+    private Date timeCreate;
+    @ApiModelProperty(value = "更改时间")
+    private Date timeUpdate;
 
 
 
