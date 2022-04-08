@@ -23,7 +23,7 @@ public class ArticleSwagger2Config {
 
     @Bean
     public Docket createArticleManageApi() {
-        return new Docket(DocumentationType.SWAGGER_2).groupName("文章分组")
+        return new Docket(DocumentationType.SWAGGER_2).groupName("文章操作")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.byn.article"))
                 .paths(PathSelectors.any())
@@ -33,7 +33,7 @@ public class ArticleSwagger2Config {
 
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("文章类")
+        return new ApiInfoBuilder().title("文章操作")
                 .description("swagger Restful API文档")
                 .version("1.0.0").build();
     }

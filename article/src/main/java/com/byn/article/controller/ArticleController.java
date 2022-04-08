@@ -1,9 +1,13 @@
 package com.byn.article.controller;
 
+import com.byn.article.entity.Article;
+import com.byn.article.service.ArticleService;
 import com.byn.web.fo.LoginFo;
 import com.result.SingleResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.checkerframework.checker.units.qual.A;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "文章操作", tags = "文章操作")
 @RequestMapping("${byn.mapping.name}/article/article")
 public class ArticleController {
+
+    @Autowired
+    private ArticleService articleService;
 
     @PostMapping("/articleListPage")
     @ApiOperation(value = "获取文章列表分页")
