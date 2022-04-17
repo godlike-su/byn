@@ -1,5 +1,6 @@
-package com.byn.article.entity;
+package com.byn.article.vo;
 
+import com.byn.article.entity.ArticleReply;
 import com.pagination.PageParam;
 import lombok.Data;
 
@@ -16,15 +17,13 @@ import java.util.List;
  * @since 2022-04-08
  */
 @Data
-public class Article extends PageParam implements Serializable {
+public class ArticleReplyVO extends PageParam implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private String articleid;
 
-    private String userid;
-
-    private String userName;
+    private String creator;
 
     private String title;
 

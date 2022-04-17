@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * @Author: `sujinwang`
@@ -38,7 +40,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Autowired
     private FileUploadMapper fileUploadMapper;
 
-//    private final String absoluteUrl = "../file/";
+    //    private final String absoluteUrl = "../file/";
     @Value("${file.uploadFolder}")
     private String absoluteUrl;
 
@@ -48,6 +50,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public String uploadFile(MultipartFile file, String used) {
         return uploadFileUrl(file, used);
     }
@@ -164,7 +167,7 @@ public class DocumentServiceImpl implements DocumentService {
      */
     private String uploadFileUrl(MultipartFile file, String used) {
         String format = DateUtil.format(new Date(), "yyyyMMdd");
-        String filePath = format + "/";
+        String filePath;
         switch (used) {
             case "0":
                 filePath = "thumb/" + format + "/";
@@ -180,12 +183,12 @@ public class DocumentServiceImpl implements DocumentService {
             return "上传失败，请选择文件";
         }
         // 获取文件类型
-        String mimeType = file.getContentType();
+        String mimeType = Optional.ofNullable(file.getContentType()).orElse("");
+        fileModelVertify(mimeType);
         // 获取文件后缀
-        String fileName;
+        String fileName = Optional.ofNullable(file.getOriginalFilename()).orElse("");
         String profilx = "";
         try {
-            fileName = file.getOriginalFilename();
             // 获取文件名后缀 .jpg .png
             int i = fileName.lastIndexOf(".");
             if (i != -1) {
@@ -246,5 +249,16 @@ public class DocumentServiceImpl implements DocumentService {
             throw new GenerallyeException("解析文件名出错!");
         }
 
+    }
+
+    private void fileModelVertify(String mimeTyp) {
+        if (mimeTyp.equals("image/jpeg")
+                || mimeTyp.equals("image/png")
+                || mimeTyp.equals("video/mp4")
+                || mimeTyp.equals("image/gif")) {
+
+        } else {
+            throw new GenerallyeException("文件只允许jpg、jpeg、gif、mp4上传。 mineType错误: " + mimeTyp);
+        }
     }
 }

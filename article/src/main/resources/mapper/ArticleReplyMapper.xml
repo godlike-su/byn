@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.byn.article.mapper.ArticleReplyMapper">
+    <resultMap id="BaseResultMap" type="com.byn.article.entity.ArticleReply">
+        <id column="ArticleReplyId" property="articlereplyid"/>
+        <result column="ArticleId" property="articleid"/>
+        <result column="userId" property="userid"/>
+        <result column="userName" property="username"/>
+        <result column="replyUserId" property="replyuserid"/>
+        <result column="replyName" property="replyname"/>
+        <result column="replyTime" property="replytime"/>
+        <result column="updateTime" property="updatetime"/>
+        <result column="delFlag" property="delflag"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="com.byn.article.entity.ArticleReply" extends="BaseResultMap">
+        <result column="replyContent" property="replycontent"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        ArticleReplyId
+        , ArticleId, userId, userName, replyUserId, replyName, replyTime, updateTime,
+    delFlag
+    </sql>
+    <sql id="Blob_Column_List">
+        replyContent
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from article_reply
+        where ArticleReplyId = #{articlereplyid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from article_reply
+        where ArticleReplyId = #{articlereplyid}
+    </delete>
+    <insert id="insert" parameterType="com.byn.article.entity.ArticleReply">
+        insert into article_reply (ArticleReplyId, ArticleId, userId,
+                                   userName, replyUserId, replyName,
+                                   replyTime, updateTime, delFlag,
+                                   replyContent)
+        values (#{articlereplyid}, #{articleid}, #{userid},
+                #{username}, #{replyuserid}, #{replyname},
+                #{replytime}, #{updatetime}, #{delflag},
+                #{replycontent})
+    </insert>
+    <insert id="insertSelective" parameterType="com.byn.article.entity.ArticleReply">
+        insert into article_reply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="articlereplyid != null">
+                ArticleReplyId,
+            </if>
+            <if test="articleid != null">
+                ArticleId,
+            </if>
+            <if test="userid != null">
+                userId,
+            </if>
+            <if test="username != null">
+                userName,
+            </if>
+            <if test="replyuserid != null">
+                replyUserId,
+            </if>
+            <if test="replyname != null">
+                replyName,
+            </if>
+            <if test="replytime != null">
+                replyTime,
+            </if>
+            <if test="updatetime != null">
+                updateTime,
+            </if>
+            <if test="delflag != null">
+                delFlag,
+            </if>
+            <if test="replycontent != null">
+                replyContent,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="articlereplyid != null">
+                #{articlereplyid},
+            </if>
+            <if test="articleid != null">
+                #{articleid},
+            </if>
+            <if test="userid != null">
+                #{userid},
+            </if>
+            <if test="username != null">
+                #{username},
+            </if>
+            <if test="replyuserid != null">
+                #{replyuserid},
+            </if>
+            <if test="replyname != null">
+                #{replyname},
+            </if>
+            <if test="replytime != null">
+                #{replytime},
+            </if>
+            <if test="updatetime != null">
+                #{updatetime},
+            </if>
+            <if test="delflag != null">
+                #{delflag},
+            </if>
+            <if test="replycontent != null">
+                #{replycontent},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.byn.article.entity.ArticleReply">
+        update article_reply
+        <set>
+            <if test="articleid != null">
+                ArticleId = #{articleid},
+            </if>
+            <if test="userid != null">
+                userId = #{userid},
+            </if>
+            <if test="username != null">
+                userName = #{username},
+            </if>
+            <if test="replyuserid != null">
+                replyUserId = #{replyuserid},
+            </if>
+            <if test="replyname != null">
+                replyName = #{replyname},
+            </if>
+            <if test="replytime != null">
+                replyTime = #{replytime},
+            </if>
+            <if test="updatetime != null">
+                updateTime = #{updatetime},
+            </if>
+            <if test="delflag != null">
+                delFlag = #{delflag},
+            </if>
+            <if test="replycontent != null">
+                replyContent = #{replycontent},
+            </if>
+        </set>
+        where ArticleReplyId = #{articlereplyid}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.byn.article.entity.ArticleReply">
+        update article_reply
+        set ArticleId    = #{articleid},
+            userId       = #{userid},
+            userName     = #{username},
+            replyUserId  = #{replyuserid},
+            replyName    = #{replyname},
+            replyTime    = #{replytime},
+            updateTime   = #{updatetime},
+            delFlag      = #{delflag},
+            replyContent = #{replycontent}
+        where ArticleReplyId = #{articlereplyid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.byn.article.entity.ArticleReply">
+        update article_reply
+        set ArticleId   = #{articleid},
+            userId      = #{userid},
+            userName    = #{username},
+            replyUserId = #{replyuserid},
+            replyName   = #{replyname},
+            replyTime   = #{replytime},
+            updateTime  = #{updatetime},
+            delFlag     = #{delflag}
+        where ArticleReplyId = #{articlereplyid}
+    </update>
+
+    <update id="updateByArticleReplySelective">
+        update article_reply
+        <set>
+            <if test="username != null">
+                userName = #{username},
+            </if>
+            <if test="replyuserid != null">
+                replyUserId = #{replyuserid},
+            </if>
+            <if test="replyname != null">
+                replyName = #{replyname},
+            </if>
+            <if test="replytime != null">
+                replyTime = #{replytime},
+            </if>
+            <if test="updatetime != null">
+                updateTime = #{updatetime},
+            </if>
+            <if test="delflag != null">
+                delFlag = #{delflag},
+            </if>
+            <if test="replycontent != null">
+                replyContent = #{replycontent},
+            </if>
+        </set>
+        where ArticleReplyId = #{articlereplyid}
+        and userId = #{userid}
+    </update>
+</mapper>

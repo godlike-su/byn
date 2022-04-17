@@ -4,3 +4,16 @@ ribbon:
   ReadTimeout: 5000
   #指的是建立连接后从服务器读取到可用资源所用的时间
   ConnectTimeout: 5000
+
+# 打印sql，仅限开发环境
+logging:
+  level:
+    com.aspire.eaop.apict.*.mapper.*: debug
+# mybatis
+mybatis:
+  configuration:
+    #org.apache.ibatis.logging.stdout.StdOutImpl 控制台打印sql语句方便调试sql语句执行错误
+    #org.apache.ibatis.logging.log4j2.Log4j2Impl:这个不在控制台打印查询结果,但是在log4j中打印
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+pagehelper:
+  supportMethodsArguments: true

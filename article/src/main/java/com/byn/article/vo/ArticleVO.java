@@ -1,10 +1,12 @@
 package com.byn.article.vo;
 
+import com.byn.article.entity.ArticleReply;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @version v1.0.0.0
@@ -16,10 +18,13 @@ public class ArticleVO {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "文章id")
-    private Integer articleid;
+    private String articleid;
 
     @ApiModelProperty(value = "创建者id")
-    private Integer creator;
+    private String userid;
+
+    @ApiModelProperty(value = "创建者名字")
+    private String userName;
 
     @ApiModelProperty(value = "文章标题")
     private String title;
@@ -31,7 +36,7 @@ public class ArticleVO {
     private String content;
 
     @ApiModelProperty(value = "板块1 0: 动态广场  1:树洞")
-    private Integer cat1;
+    private String cat1;
 
     @ApiModelProperty(value = "创建时间")
     private Date timecreate;
@@ -40,13 +45,13 @@ public class ArticleVO {
     private Date timeupdate;
 
     @ApiModelProperty(value = "精华文章")
-    private Integer niceflag;
+    private String niceflag;
 
     @ApiModelProperty(value = "置顶文章")
-    private Integer topflag;
+    private String topflag;
 
     @ApiModelProperty(value = "删除标识")
-    private Integer delflag;
+    private String delflag;
 
     @ApiModelProperty(value = "文章类型 0:原创 1:转载 2:官方推文")
     private String type;
@@ -55,23 +60,26 @@ public class ArticleVO {
     private String address;
 
     @ApiModelProperty(value = "发布形式 暂时没想到")
-    private Integer form;
+    private String form;
 
     @ApiModelProperty(value = "需要先通过审核 0:待审核  1:审核通过 2:审核不通过")
-    private Integer audit;
+    private String audit;
 
     @ApiModelProperty(value = "是否为草稿 0: 否  1：是")
-    private Integer draft;
+    private String draft;
 
     @ApiModelProperty(value = "回复数")
-    private Integer numreply;
+    private String numreply;
 
     @ApiModelProperty(value = "收藏数")
-    private Integer numstart;
+    private String numstart;
 
     @ApiModelProperty(value = "点赞数")
-    private Integer numlike;
+    private String numlike;
 
     @ApiModelProperty(value = "图片id，使用逗号分隔")
     private String attachGroupId;
+
+    @ApiModelProperty(value = "文章的评论评论内容")
+    private List<ArticleReply> articleReplyList;
 }

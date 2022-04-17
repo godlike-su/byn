@@ -1,5 +1,494 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.byn.article.mapper.ArticleMapper">
+    <resultMap id="BaseResultMap" type="com.byn.article.entity.Article">
+        <id column="articleId" property="articleid"/>
+        <result column="userId" property="userid"/>
+        <result column="userName" property="userName"/>
+        <result column="title" property="title"/>
+        <result column="text" property="text"/>
+        <result column="cat1" property="cat1"/>
+        <result column="timeCreate" property="timecreate"/>
+        <result column="timeUpdate" property="timeupdate"/>
+        <result column="niceFlag" property="niceflag"/>
+        <result column="topFlag" property="topflag"/>
+        <result column="delFlag" property="delflag"/>
+        <result column="type" property="type"/>
+        <result column="address" property="address"/>
+        <result column="form" property="form"/>
+        <result column="audit" property="audit"/>
+        <result column="draft" property="draft"/>
+        <result column="numReply" property="numreply"/>
+        <result column="numStart" property="numstart"/>
+        <result column="numLike" property="numlike"/>
+        <result column="attach_group_id" property="attachGroupId"/>
+        <result column="content" property="content"/>
+        <collection property="articleReplyList" javaType="list" ofType="com.byn.article.entity.ArticleReply">
+            <id column="ArticleReplyId" property="articlereplyid" />
+            <result column="ArticleId" property="articleid" />
+            <result column="userId" property="userid" />
+            <result column="userName" property="username" />
+            <result column="replyUserId" property="replyuserid" />
+            <result column="replyName" property="replyname" />
+            <result column="replyTime" property="replytime" />
+            <result column="updateTime" property="updatetime" />
+            <result column="delFlag" property="delflag" />
+        </collection>
+    </resultMap>
+    <resultMap id="BaseResultMapVO" type="com.byn.article.vo.ArticleVO">
+        <id column="articleId" property="articleid"/>
+        <result column="userId" property="userid"/>
+        <result column="userName" property="userName"/>
+        <result column="title" property="title"/>
+        <result column="text" property="text"/>
+        <result column="cat1" property="cat1"/>
+        <result column="timeCreate" property="timecreate"/>
+        <result column="timeUpdate" property="timeupdate"/>
+        <result column="niceFlag" property="niceflag"/>
+        <result column="topFlag" property="topflag"/>
+        <result column="delFlag" property="delflag"/>
+        <result column="type" property="type"/>
+        <result column="address" property="address"/>
+        <result column="form" property="form"/>
+        <result column="audit" property="audit"/>
+        <result column="draft" property="draft"/>
+        <result column="numReply" property="numreply"/>
+        <result column="numStart" property="numstart"/>
+        <result column="numLike" property="numlike"/>
+        <result column="attach_group_id" property="attachGroupId"/>
+        <result column="content" property="content"/>
+        <collection property="articleReplyList" javaType="list" ofType="com.byn.article.entity.ArticleReply">
+            <id column="ArticleReplyId" property="articlereplyid" />
+            <result column="rArticleId" property="articleid" />
+            <result column="ruserId" property="userid" />
+            <result column="ruserName" property="username" />
+            <result column="replyUserId" property="replyuserid" />
+            <result column="replyName" property="replyname" />
+            <result column="replyTime" property="replytime" />
+            <result column="updateTime" property="updatetime" />
+            <result column="rdelFlag" property="delflag" />
+            <result column="replyContent" property="replycontent" />
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
+        articleId
+        , userId, userName, title, text, cat1, timeCreate, timeUpdate, niceFlag, topFlag,
+    delFlag, type, address, form, audit, draft, numReply, numStart, numLike, attach_group_id, content
+    </sql>
+    <sql id="Article_Reply_List">
+        a.articleId, a.userid, a.userName, a.title, a.text, a.cat1, a.timeCreate, a.timeUpdate, a.niceFlag, a.topFlag,
+        a.delFlag, a.type, a.address, a.form, a.audit, a.draft, a.numReply, a.numStart, a.numLike, a.attach_group_id, a.content
+        , ar.ArticleReplyId
+        , ar.ArticleId as rArticleId, ar.userId as ruserId, ar.userName as ruserName, ar.replyUserId, ar.replyName, ar.replyTime, ar.updateTime,
+        ar.delFlag as rdelFlag, ar.replyContent
+    </sql>
 
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from article
+        where articleId = #{articleid}
+    </select>
+
+    <select id="queryArticleList" resultMap="BaseResultMapVO">
+        select
+        <include refid="Article_Reply_List"/>
+        from article a
+        left join article_reply ar on a.articleId = ar.ArticleId and ar.delFlag = '0'
+        <where>
+            <if test="userid != null">
+                and a.userid = #{userid}
+            </if>
+            <if test="userName != null">
+                and a.userName = #{userName}
+            </if>
+            <if test="title != null">
+                and a.title = #{title}
+            </if>
+            <if test="text != null">
+                and a.text = #{text}
+            </if>
+            <if test="cat1 != null">
+                and a.cat1 = #{cat1}
+            </if>
+            <if test="timecreate != null">
+                and a.timeCreate = #{timecreate}
+            </if>
+            <if test="timeupdate != null">
+                and a.timeUpdate = #{timeupdate}
+            </if>
+            <if test="niceflag != null">
+                and a.niceFlag = #{niceflag}
+            </if>
+            <if test="topflag != null">
+                and a.topFlag = #{topflag}
+            </if>
+            <if test="delflag != null">
+                and a.delFlag = #{delflag}
+            </if>
+            <if test="type != null">
+                and a.type = #{type}
+            </if>
+            <if test="address != null">
+                and a.address = #{address}
+            </if>
+            <if test="form != null">
+                and a.form = #{form}
+            </if>
+            <if test="audit != null">
+                and a.audit = #{audit}
+            </if>
+            <if test="draft != null">
+                and a.draft = #{draft}
+            </if>
+            <if test="numreply != null">
+                and a.numReply = #{numreply}
+            </if>
+            <if test="numstart != null">
+                and a.numStart = #{numstart}
+            </if>
+            <if test="numlike != null">
+                and a.umLike = #{numlike}
+            </if>
+            <if test="attachGroupId != null">
+                and a.attach_group_id = #{attachGroupId}
+            </if>
+            <if test="content != null">
+                and a.content = #{content}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from article
+        where articleId = #{articleid}
+    </delete>
+    <insert id="insert" parameterType="com.byn.article.entity.Article">
+        insert into article (articleId, userid, userName, title,
+                             text, cat1, timeCreate,
+                             timeUpdate, niceFlag, topFlag,
+                             delFlag, type, address,
+                             form, audit, draft,
+                             numReply, numStart, numLike,
+                             attach_group_id, content)
+        values (#{articleid}, #{userid}, #{userName}, #{title},
+                #{text}, #{cat1}, #{timecreate},
+                #{timeupdate}, #{niceflag}, #{topflag},
+                #{delflag}, #{type}, #{address},
+                #{form}, #{audit}, #{draft},
+                #{numreply}, #{numstart}, #{numlike},
+                #{attachGroupId}, #{content})
+    </insert>
+    <insert id="insertSelective" parameterType="com.byn.article.entity.Article">
+        insert into article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="articleid != null">
+                articleId,
+            </if>
+            <if test="userid != null">
+                userid,
+            </if>
+            <if test="userName != null">
+                userName,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="text != null">
+                text,
+            </if>
+            <if test="cat1 != null">
+                cat1,
+            </if>
+            <if test="timecreate != null">
+                timeCreate,
+            </if>
+            <if test="timeupdate != null">
+                timeUpdate,
+            </if>
+            <if test="niceflag != null">
+                niceFlag,
+            </if>
+            <if test="topflag != null">
+                topFlag,
+            </if>
+            <if test="delflag != null">
+                delFlag,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="form != null">
+                form,
+            </if>
+            <if test="audit != null">
+                audit,
+            </if>
+            <if test="draft != null">
+                draft,
+            </if>
+            <if test="numreply != null">
+                numReply,
+            </if>
+            <if test="numstart != null">
+                numStart,
+            </if>
+            <if test="numlike != null">
+                numLike,
+            </if>
+            <if test="attachGroupId != null">
+                attach_group_id,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="articleid != null">
+                #{articleid},
+            </if>
+            <if test="userid != null">
+                #{userid},
+            </if>
+            <if test="userName != null">
+                #{userName},
+            </if>
+            <if test="title != null">
+                #{title},
+            </if>
+            <if test="text != null">
+                #{text},
+            </if>
+            <if test="cat1 != null">
+                #{cat1},
+            </if>
+            <if test="timecreate != null">
+                #{timecreate},
+            </if>
+            <if test="timeupdate != null">
+                #{timeupdate},
+            </if>
+            <if test="niceflag != null">
+                #{niceflag},
+            </if>
+            <if test="topflag != null">
+                #{topflag},
+            </if>
+            <if test="delflag != null">
+                #{delflag},
+            </if>
+            <if test="type != null">
+                #{type},
+            </if>
+            <if test="address != null">
+                #{address},
+            </if>
+            <if test="form != null">
+                #{form},
+            </if>
+            <if test="audit != null">
+                #{audit},
+            </if>
+            <if test="draft != null">
+                #{draft},
+            </if>
+            <if test="numreply != null">
+                #{numreply},
+            </if>
+            <if test="numstart != null">
+                #{numstart},
+            </if>
+            <if test="numlike != null">
+                #{numlike},
+            </if>
+            <if test="attachGroupId != null">
+                #{attachGroupId},
+            </if>
+            <if test="content != null">
+                #{content},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.byn.article.entity.Article">
+        update article
+        <set>
+            <if test="userid != null">
+                userid = #{userid},
+            </if>
+            <if test="userName != null">
+                userName = #{userName},
+            </if>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="text != null">
+                text = #{text},
+            </if>
+            <if test="cat1 != null">
+                cat1 = #{cat1},
+            </if>
+            <if test="timecreate != null">
+                timeCreate = #{timecreate},
+            </if>
+            <if test="timeupdate != null">
+                timeUpdate = #{timeupdate},
+            </if>
+            <if test="niceflag != null">
+                niceFlag = #{niceflag},
+            </if>
+            <if test="topflag != null">
+                topFlag = #{topflag},
+            </if>
+            <if test="delflag != null">
+                delFlag = #{delflag},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="form != null">
+                form = #{form},
+            </if>
+            <if test="audit != null">
+                audit = #{audit},
+            </if>
+            <if test="draft != null">
+                draft = #{draft},
+            </if>
+            <if test="numreply != null">
+                numReply = #{numreply},
+            </if>
+            <if test="numstart != null">
+                numStart = #{numstart},
+            </if>
+            <if test="numlike != null">
+                numLike = #{numlike},
+            </if>
+            <if test="attachGroupId != null">
+                attach_group_id = #{attachGroupId},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+        </set>
+        where articleId = #{articleid}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.byn.article.entity.Article">
+        update article
+        set userid         = #{userid},
+            userName         = #{userName},
+            title           = #{title},
+            text            = #{text},
+            cat1            = #{cat1},
+            timeCreate      = #{timecreate},
+            timeUpdate      = #{timeupdate},
+            niceFlag        = #{niceflag},
+            topFlag         = #{topflag},
+            delFlag         = #{delflag},
+            type            = #{type},
+            address         = #{address},
+            form            = #{form},
+            audit           = #{audit},
+            draft           = #{draft},
+            numReply        = #{numreply},
+            numStart        = #{numstart},
+            numLike         = #{numlike},
+            attach_group_id = #{attachGroupId},
+            content         = #{content}
+        where articleId = #{articleid}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.byn.article.entity.Article">
+        update article
+        set userid         = #{userid},
+            userName        = #{userName},
+            title           = #{title},
+            text            = #{text},
+            cat1            = #{cat1},
+            timeCreate      = #{timecreate},
+            timeUpdate      = #{timeupdate},
+            niceFlag        = #{niceflag},
+            topFlag         = #{topflag},
+            delFlag         = #{delflag},
+            type            = #{type},
+            address         = #{address},
+            form            = #{form},
+            audit           = #{audit},
+            draft           = #{draft},
+            numReply        = #{numreply},
+            numStart        = #{numstart},
+            numLike         = #{numlike},
+            attach_group_id = #{attachGroupId}
+        where articleId = #{articleid}
+    </update>
+    <update id="updateByArticleSelective">
+
+        update article
+        <set>
+            <if test="userName != null">
+                userName = #{userName},
+            </if>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="text != null">
+                text = #{text},
+            </if>
+            <if test="cat1 != null">
+                cat1 = #{cat1},
+            </if>
+            <if test="timecreate != null">
+                timeCreate = #{timecreate},
+            </if>
+            <if test="timeupdate != null">
+                timeUpdate = #{timeupdate},
+            </if>
+            <if test="niceflag != null">
+                niceFlag = #{niceflag},
+            </if>
+            <if test="topflag != null">
+                topFlag = #{topflag},
+            </if>
+            <if test="delflag != null">
+                delFlag = #{delflag},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="form != null">
+                form = #{form},
+            </if>
+            <if test="audit != null">
+                audit = #{audit},
+            </if>
+            <if test="draft != null">
+                draft = #{draft},
+            </if>
+            <if test="numreply != null">
+                numReply = #{numreply},
+            </if>
+            <if test="numstart != null">
+                numStart = #{numstart},
+            </if>
+            <if test="numlike != null">
+                numLike = #{numlike},
+            </if>
+            <if test="attachGroupId != null">
+                attach_group_id = #{attachGroupId},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+        </set>
+        where articleId = #{articleid}
+        and userid = #{userid}
+    </update>
 </mapper>
