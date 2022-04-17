@@ -2,6 +2,7 @@ package com.byn.article.service;
 
 import com.byn.article.fo.ArticleAddFO;
 import com.byn.article.fo.ArticleFO;
+import com.byn.article.fo.ArticleSaveFO;
 import com.byn.article.vo.ArticleVO;
 import com.byn.common.session.entity.SessionUserDetail;
 import com.github.pagehelper.Page;
@@ -26,18 +27,23 @@ public interface ArticleService {
     Page<ArticleVO> queryArticleList(ArticleFO articleFO);
 
     /**
-     * 根据id更新数据字典项
+     * 根据id修改文章
      */
-    int updateArticle(ArticleFO articleFO, SessionUserDetail sessionUser);
+    int updateArticle(ArticleSaveFO articleSaveFO, SessionUserDetail sessionUser);
 
     /**
      * 新增
      */
-    int addArticle(ArticleAddFO articleAddFO, SessionUserDetail sessionUser);
+    int addArticleByCat0(ArticleAddFO articleAddFO, SessionUserDetail sessionUser);
+
+    /**
+     * 新增
+     */
+    int addArticleByCat1(ArticleAddFO articleAddFO, SessionUserDetail sessionUser);
 
     /**
      * 根据id删除数据字典项
      */
-    int deleteArticle(ArticleFO articleFO, SessionUserDetail sessionUser);
+    int deleteArticle(ArticleSaveFO articleSaveFO, SessionUserDetail sessionUser);
 
 }

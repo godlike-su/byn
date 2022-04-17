@@ -39,5 +39,13 @@ public class UserServiceImpl implements UserService {
         return ObjectTransform.transform(u, UserVO.class);
     }
 
+    @Override
+    public UserVO getUserById(String userId) {
+        User user = new User();
+        user.setUserId(userId);
+        User u = userMapper.getUser(user);
+        return ObjectTransform.transform(u, UserVO.class);
+    }
+
 
 }

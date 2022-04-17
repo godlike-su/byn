@@ -3,6 +3,7 @@ package com.byn.article.service.impl;
 import com.byn.article.entity.ArticleReply;
 import com.byn.article.fo.ArticleReplyAddFO;
 import com.byn.article.fo.ArticleReplyFO;
+import com.byn.article.fo.ArticleReplySaveFO;
 import com.byn.article.mapper.ArticleReplyMapper;
 import com.byn.article.service.ArticleReplyService;
 import com.byn.article.vo.ArticleReplyVO;
@@ -14,6 +15,7 @@ import com.github.pagehelper.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -41,16 +43,17 @@ public class ArticleReplyServiceImpl implements ArticleReplyService {
 
     @Override
     public Page<ArticleReplyVO> queryArticleReplyList(ArticleReplyFO articleReplyFO) {
-        ArticleReply articleReply = ObjectTransform.transform(articleReplyFO, ArticleReply.class);
         return null;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int updateArticleReply(ArticleReplyFO articleReplyFO) {
         return 0;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int addArticleReply(ArticleReplyAddFO articleReplyAddFO, SessionUserDetail sessionUser) {
         ArticleReply articleReply = ObjectTransform.transform(articleReplyAddFO, ArticleReply.class);
         articleReply.setArticlereplyid(String.valueOf(SnowFlakeUtil.getId()));
@@ -65,10 +68,12 @@ public class ArticleReplyServiceImpl implements ArticleReplyService {
     }
 
     @Override
-    public int deleteArticleReply(ArticleReplyFO articleReplyFO, SessionUserDetail sessionUser) {
+    @Transactional(rollbackFor = Exception.class)
+    public int deleteArticleReply(ArticleReplySaveFO articleReplySaveFO, SessionUserDetail sessionUser) {
         ArticleReply articleReply = new ArticleReply();
-        articleReply.setArticlereplyid(articleReplyFO.getArticlereplyid());
+        articleReply.setArticlereplyid(articleReplySaveFO.getArticlereplyid());
         articleReply.setUserid(sessionUser.getUserId());
+        articleReply.setUsername(sessionUser.getUserName());
         articleReply.setDelflag("1");
         articleReply.setUpdatetime(new Date());
         int num = articleReplyMapper.updateByPrimaryKeySelective(articleReply);

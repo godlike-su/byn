@@ -26,4 +26,6 @@ public interface UserService {
      */
     UserVO getUserInformation(UserFO userFO);
 
+    UserVO getUserById(String userId);
+
 }

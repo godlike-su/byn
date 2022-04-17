@@ -3,6 +3,7 @@ package com.byn.article.controller;
 
 import com.byn.article.fo.ArticleAddFO;
 import com.byn.article.fo.ArticleFO;
+import com.byn.article.fo.ArticleSaveFO;
 import com.byn.article.service.ArticleService;
 import com.byn.article.vo.ArticleVO;
 import com.byn.common.session.entity.SessionUserDetail;
@@ -14,6 +15,7 @@ import com.result.PageResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,9 +68,9 @@ public class ArticleController {
      */
     @PostMapping(value = "/updateArticle")
     @ApiOperation(value = "修改文章")
-    public MessageResult updateArticle(@RequestBody ArticleFO articleFO) {
+    public MessageResult updateArticle(@RequestBody @Validated ArticleSaveFO articleSaveFO) {
         SessionUserDetail sessionUser = this.sessionUser.getSessionUser();
-        articleService.updateArticle(articleFO, sessionUser);
+        articleService.updateArticle(articleSaveFO, sessionUser);
         return new MessageResult("修改文章成功！");
     }
 
@@ -76,11 +78,24 @@ public class ArticleController {
      * 新增文章
      *
      */
-    @PostMapping(value = "/addArticle")
-    @ApiOperation(value = "新增文章")
-    public MessageResult addArticle(@RequestBody ArticleAddFO articleAddFO) {
+    @PostMapping(value = "/addArticleByCat0")
+    @ApiOperation(value = "新增文章,动态广场")
+    public MessageResult addArticleByCat0(@RequestBody ArticleAddFO articleAddFO) {
         SessionUserDetail sessionUser = this.sessionUser.getSessionUser();
-        articleService.addArticle(articleAddFO, sessionUser);
+        articleService.addArticleByCat0(articleAddFO, sessionUser);
+        return new MessageResult("新增文章成功！");
+    }
+
+
+    /**
+     * 新增文章
+     *
+     */
+    @PostMapping(value = "/addArticleByCat1")
+    @ApiOperation(value = "新增文章,树洞")
+    public MessageResult addArticleByCat1(@RequestBody ArticleAddFO articleAddFO) {
+        SessionUserDetail sessionUser = this.sessionUser.getSessionUser();
+        articleService.addArticleByCat1(articleAddFO, sessionUser);
         return new MessageResult("新增文章成功！");
     }
 
@@ -88,12 +103,13 @@ public class ArticleController {
      * 删除文章
      *
      * @return 删除成功结果
+     * @param articleSaveFO
      */
     @PostMapping(value = "/deleteArticle")
     @ApiOperation(value = "删除文章")
-    public MessageResult deleteArticle(@RequestBody ArticleFO articleFO) {
+    public MessageResult deleteArticle(@RequestBody @Validated ArticleSaveFO articleSaveFO) {
         SessionUserDetail sessionUser = this.sessionUser.getSessionUser();
-        articleService.deleteArticle(articleFO, sessionUser);
+        articleService.deleteArticle(articleSaveFO, sessionUser);
         return new MessageResult("删除文章成功!");
     }
 

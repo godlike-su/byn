@@ -1,8 +1,10 @@
 package com.byn.article.service.impl;
 
+import com.byn.article.common.ArticleEnum;
 import com.byn.article.entity.Article;
 import com.byn.article.fo.ArticleAddFO;
 import com.byn.article.fo.ArticleFO;
+import com.byn.article.fo.ArticleSaveFO;
 import com.byn.article.mapper.ArticleMapper;
 import com.byn.article.service.ArticleService;
 import com.byn.article.vo.ArticleVO;
@@ -10,14 +12,18 @@ import com.byn.common.exception.GenerallyeException;
 import com.byn.common.session.entity.SessionUserDetail;
 import com.byn.common.util.ObjectTransform;
 import com.byn.common.util.SnowFlakeUtil;
+import com.byn.web.service.UserService;
+import com.byn.web.vo.UserVO;
 import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.page.PageMethod;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * <p>
@@ -34,25 +40,34 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private ArticleMapper articleMapper;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public List<ArticleVO> all() {
-        Page<ArticleVO> articleVOS = articleMapper.queryArticleList(null);
-        return articleVOS;
+        return articleMapper.queryArticleList(null);
     }
 
     @Override
     public Page<ArticleVO> queryArticleList(ArticleFO articleFO) {
-        PageHelper.startPage(articleFO.getPage(), articleFO.getRows());
+        PageMethod.startPage(articleFO.getPage(), articleFO.getRows());
         Article article = ObjectTransform.transform(articleFO, Article.class);
         article.setAudit("1");
         article.setDelflag("0");
         Page<ArticleVO> articleVOS = articleMapper.queryArticleList(article);
+        for (ArticleVO articleVO : articleVOS) {
+            String userid = articleVO.getUserid();
+            UserVO userVO = userService.getUserById(userid);
+            String userThumb = Optional.ofNullable(userVO).map(UserVO::getThumb).orElse(null);
+            articleVO.setUserThumb(userThumb);
+        }
         return articleVOS;
     }
 
     @Override
-    public int updateArticle(ArticleFO articleFO, SessionUserDetail sessionUser) {
-        Article article = ObjectTransform.transform(articleFO, Article.class);
+    @Transactional(rollbackFor = Exception.class)
+    public int updateArticle(ArticleSaveFO articleSaveFO, SessionUserDetail sessionUser) {
+        Article article = ObjectTransform.transform(articleSaveFO, Article.class);
         article.setUserid(sessionUser.getUserId());
         article.setArticleid(sessionUser.getUserId());
         article.setTimeupdate(new Date());
@@ -64,22 +79,40 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public int addArticle(ArticleAddFO articleAddFO, SessionUserDetail sessionUser) {
+    public int addArticleByCat0(ArticleAddFO articleAddFO, SessionUserDetail sessionUser) {
         Article article = ObjectTransform.transform(articleAddFO, Article.class);
         article.setUserid(sessionUser.getUserId());
         article.setUserName(sessionUser.getUserName());
         article.setArticleid(String.valueOf(SnowFlakeUtil.getId()));
+        article.setCat1(ArticleEnum.CAT1_SQUARE.getKey());
         article.setTimeupdate(new Date());
         int num = articleMapper.insertSelective(article);
         if (num != 1) {
-            throw new GenerallyeException("新增文章失败!");
+            throw new GenerallyeException("新增文章动态广场失败!");
         }
-        return 0;
+        return num;
     }
 
     @Override
-    public int deleteArticle(ArticleFO articleFO, SessionUserDetail sessionUser) {
-        Article article = ObjectTransform.transform(articleFO, Article.class);
+    public int addArticleByCat1(ArticleAddFO articleAddFO, SessionUserDetail sessionUser) {
+        Article article = ObjectTransform.transform(articleAddFO, Article.class);
+        article.setUserid(sessionUser.getUserId());
+        article.setUserName(sessionUser.getUserName());
+        article.setArticleid(String.valueOf(SnowFlakeUtil.getId()));
+        article.setCat1(ArticleEnum.CAT1_HOLE.getKey());
+        article.setTimeupdate(new Date());
+        article.setCat1("1");
+        int num = articleMapper.insertSelective(article);
+        if (num != 1) {
+            throw new GenerallyeException("新增文章树洞失败!");
+        }
+        return num;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int deleteArticle(ArticleSaveFO articleSaveFO, SessionUserDetail sessionUser) {
+        Article article = ObjectTransform.transform(articleSaveFO, Article.class);
         article.setUserid(sessionUser.getUserId());
         article.setTimeupdate(new Date());
         article.setDelflag("1");

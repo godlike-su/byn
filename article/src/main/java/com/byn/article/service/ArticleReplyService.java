@@ -2,6 +2,7 @@ package com.byn.article.service;
 
 import com.byn.article.fo.ArticleReplyAddFO;
 import com.byn.article.fo.ArticleReplyFO;
+import com.byn.article.fo.ArticleReplySaveFO;
 import com.byn.article.vo.ArticleReplyVO;
 import com.byn.common.session.entity.SessionUserDetail;
 import com.github.pagehelper.Page;
@@ -37,6 +38,6 @@ public interface ArticleReplyService {
   /**
    * 根据id删除数据字典项
    */
-  int deleteArticleReply(ArticleReplyFO articleReplyFO, SessionUserDetail sessionUser);
+  int deleteArticleReply(ArticleReplySaveFO articleReplySaveFO, SessionUserDetail sessionUser);
 
 }

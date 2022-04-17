@@ -3,6 +3,7 @@ package com.byn.article.controller;
 
 import com.byn.article.fo.ArticleReplyAddFO;
 import com.byn.article.fo.ArticleReplyFO;
+import com.byn.article.fo.ArticleReplySaveFO;
 import com.byn.article.service.ArticleReplyService;
 import com.byn.article.vo.ArticleReplyVO;
 import com.byn.common.session.entity.SessionUserDetail;
@@ -39,18 +40,6 @@ public class ArticleReplyController {
     private SessionUser sessionUser;
 
     /**
-     * 查询所有文章
-     *
-     * @return ArticleReplyFO
-     */
-    @PostMapping(value = "/allArticleReply")
-    @ApiOperation(value = "查询文章所有评论")
-    public ListResult<ArticleReplyVO> allArticleReply() {
-        List<ArticleReplyVO> all = articleReplyService.all();
-        return new ListResult<>(all);
-    }
-
-    /**
      * 根据查询参数查询文章
      */
     @PostMapping(value = "/queryArticleReplyList")
@@ -79,10 +68,10 @@ public class ArticleReplyController {
      */
     @PostMapping(value = "/deleteArticleReply")
     @ApiOperation(value = "删除文章评论")
-    public MessageResult deleteArticleReply(@RequestBody ArticleReplyFO articleReplyFO) {
+    public MessageResult deleteArticleReply(@RequestBody @Validated ArticleReplySaveFO articleReplySaveFO) {
         SessionUserDetail sessionUser = this.sessionUser.getSessionUser();
-        articleReplyService.deleteArticleReply(articleReplyFO, sessionUser);
-        return new MessageResult("删除文章成功!");
+        articleReplyService.deleteArticleReply(articleReplySaveFO, sessionUser);
+        return new MessageResult("删除评论成功!");
     }
 
 }

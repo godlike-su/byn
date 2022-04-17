@@ -80,6 +80,9 @@ public class ArticleVO {
     @ApiModelProperty(value = "图片id，使用逗号分隔")
     private String attachGroupId;
 
+    @ApiModelProperty(value = "用户头像id")
+    private String userThumb;
+
     @ApiModelProperty(value = "文章的评论评论内容")
     private List<ArticleReply> articleReplyList;
 }
