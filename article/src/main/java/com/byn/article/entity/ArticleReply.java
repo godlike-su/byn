@@ -1,105 +1,55 @@
 package com.byn.article.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class ArticleReply {
+/**
+ * <p>
+ * 文章回复表
+ * </p>
+ *
+ * @author 
+ * @since 2022-04-18
+ */
+@Data
+@ApiModel(value="ArticleReply对象", description="文章回复表")
+public class ArticleReply implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @ApiModelProperty(value = "回复表id")
     private String articlereplyid;
 
+    @ApiModelProperty(value = "文章id")
     private String articleid;
 
+    @ApiModelProperty(value = "用户id")
     private String userid;
 
+    @ApiModelProperty(value = "用户名")
     private String username;
 
+    @ApiModelProperty(value = "回复人id")
     private String replyuserid;
 
+    @ApiModelProperty(value = "回复人姓名")
     private String replyname;
 
-    private Date replytime;
-
-    private Date updatetime;
-
-    private String delflag;
-
+    @ApiModelProperty(value = "回复内容")
     private String replycontent;
 
-    public String getArticlereplyid() {
-        return articlereplyid;
-    }
+    @ApiModelProperty(value = "回复时间")
+    private Date replytime;
 
-    public void setArticlereplyid(String articlereplyid) {
-        this.articlereplyid = articlereplyid == null ? null : articlereplyid.trim();
-    }
+    @ApiModelProperty(value = "修改时间")
+    private Date updatetime;
 
-    public String getArticleid() {
-        return articleid;
-    }
+    @ApiModelProperty(value = "删除标识 1:删除")
+    private String delflag;
 
-    public void setArticleid(String articleid) {
-        this.articleid = articleid == null ? null : articleid.trim();
-    }
 
-    public String getUserid() {
-        return userid;
-    }
-
-    public void setUserid(String userid) {
-        this.userid = userid == null ? null : userid.trim();
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
-    }
-
-    public String getReplyuserid() {
-        return replyuserid;
-    }
-
-    public void setReplyuserid(String replyuserid) {
-        this.replyuserid = replyuserid == null ? null : replyuserid.trim();
-    }
-
-    public String getReplyname() {
-        return replyname;
-    }
-
-    public void setReplyname(String replyname) {
-        this.replyname = replyname == null ? null : replyname.trim();
-    }
-
-    public Date getReplytime() {
-        return replytime;
-    }
-
-    public void setReplytime(Date replytime) {
-        this.replytime = replytime;
-    }
-
-    public Date getUpdatetime() {
-        return updatetime;
-    }
-
-    public void setUpdatetime(Date updatetime) {
-        this.updatetime = updatetime;
-    }
-
-    public String getDelflag() {
-        return delflag;
-    }
-
-    public void setDelflag(String delflag) {
-        this.delflag = delflag == null ? null : delflag.trim();
-    }
-
-    public String getReplycontent() {
-        return replycontent;
-    }
-
-    public void setReplycontent(String replycontent) {
-        this.replycontent = replycontent == null ? null : replycontent.trim();
-    }
 }
