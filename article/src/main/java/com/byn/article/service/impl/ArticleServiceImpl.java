@@ -12,10 +12,12 @@ import com.byn.common.exception.GenerallyeException;
 import com.byn.common.session.entity.SessionUserDetail;
 import com.byn.common.util.ObjectTransform;
 import com.byn.common.util.SnowFlakeUtil;
-import com.byn.web.service.UserService;
-import com.byn.web.vo.UserVO;
+import com.byn.openfeign.feign.CommonWebFeign;
+import com.byn.openfeign.fo.UserFO;
+import com.byn.openfeign.vo.UserVO;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.page.PageMethod;
+import com.result.SingleResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,7 +43,7 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleMapper articleMapper;
 
     @Autowired
-    private UserService userService;
+    private CommonWebFeign commonWebFeign;
 
     @Override
     public List<ArticleVO> all() {
@@ -57,7 +59,10 @@ public class ArticleServiceImpl implements ArticleService {
         Page<ArticleVO> articleVOS = articleMapper.queryArticleList(article);
         for (ArticleVO articleVO : articleVOS) {
             String userid = articleVO.getUserid();
-            UserVO userVO = userService.getUserById(userid);
+            UserFO userFO = new UserFO();
+            userFO.setUserId(userid);
+            SingleResult<UserVO> userInformation = commonWebFeign.getUserInformation(userFO);
+            UserVO userVO = userInformation.getData();
             String userThumb = Optional.ofNullable(userVO).map(UserVO::getThumb).orElse(null);
             articleVO.setUserThumb(userThumb);
         }

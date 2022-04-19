@@ -12,10 +12,10 @@ spring:
         file-extension: yaml #指定yaml格式的配置
         group: DEV # 读取指定分组下的配置文件
   application:
-    name: byn-client
+    name: byn-web-common
 
 server:
-  port: 8081
+  port: 8088
 
 
 

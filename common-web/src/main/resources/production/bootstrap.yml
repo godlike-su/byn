@@ -1,6 +1,6 @@
 # 此处更改不得上传
 spring:
-  profile: dev
+  profile: product
   cloud:
     nacos:
       # 指定nacos访问地址,需要先安装nacos
@@ -10,12 +10,12 @@ spring:
       config:
         server-addr: 139.159.225.251:8848 #Nacos作为配置中心地址
         file-extension: yaml #指定yaml格式的配置
-        group: DEV # 读取指定分组下的配置文件
+        group: PRODUCT # 读取指定分组下的配置文件
   application:
-    name: byn-client
+    name: byn-web-common
 
 server:
-  port: 8081
+  port: 8088
 
 
 

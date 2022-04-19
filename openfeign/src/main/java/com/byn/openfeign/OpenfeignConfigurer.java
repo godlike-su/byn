@@ -1,5 +1,6 @@
 package com.byn.openfeign;
 
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
  * @Description:
  */
 @Configuration
+@EnableFeignClients
 @ComponentScan(basePackages = {"com.byn.openfeign"})
 public class OpenfeignConfigurer {
 }
