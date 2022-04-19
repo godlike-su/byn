@@ -9,7 +9,6 @@ import com.byn.article.vo.ArticleReplyVO;
 import com.byn.common.session.entity.SessionUserDetail;
 import com.byn.common.session.service.SessionUser;
 import com.github.pagehelper.Page;
-import com.result.ListResult;
 import com.result.MessageResult;
 import com.result.PageResult;
 import io.swagger.annotations.Api;
@@ -20,8 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * 文章评论回复操作

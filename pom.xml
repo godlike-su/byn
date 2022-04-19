@@ -12,10 +12,10 @@
     <modules>
         <module>webReturn</module>
         <module>gateway</module>
-        <module>article</module>
+        <module>client/article</module>
         <module>common</module>
         <module>common-web</module>
-        <module>sartup</module>
+        <module>client/sartup</module>
         <module>openfeign</module>
     </modules>
 

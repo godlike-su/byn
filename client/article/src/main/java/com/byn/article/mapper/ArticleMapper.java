@@ -5,8 +5,6 @@ import com.byn.article.vo.ArticleVO;
 import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
-
 /**
  * <p>
  * 文章 Mapper 接口
