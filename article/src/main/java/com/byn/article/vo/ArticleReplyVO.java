@@ -1,66 +1,55 @@
 package com.byn.article.vo;
 
-import com.byn.article.entity.ArticleReply;
-import com.pagination.PageParam;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * <p>
- * 文章
+ * 文章回复表
  * </p>
  *
  * @author 
- * @since 2022-04-08
+ * @since 2022-04-18
  */
 @Data
-public class ArticleReplyVO extends PageParam implements Serializable {
+@ApiModel(value="ArticleReply对象", description="文章回复表")
+public class ArticleReplyVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty(value = "回复表id")
+    private String articlereplyid;
+
+    @ApiModelProperty(value = "文章id")
     private String articleid;
 
-    private String creator;
+    @ApiModelProperty(value = "用户id")
+    private String userid;
 
-    private String title;
+    @ApiModelProperty(value = "用户名")
+    private String username;
 
-    private String text;
+    @ApiModelProperty(value = "回复人id")
+    private String replyuserid;
 
-    private String content;
+    @ApiModelProperty(value = "回复人姓名")
+    private String replyname;
 
-    private String cat1;
+    @ApiModelProperty(value = "回复内容")
+    private String replycontent;
 
-    private Date timecreate;
+    @ApiModelProperty(value = "回复时间")
+    private Date replytime;
 
-    private Date timeupdate;
+    @ApiModelProperty(value = "修改时间")
+    private Date updatetime;
 
-    private String niceflag;
-
-    private String topflag;
-
+    @ApiModelProperty(value = "删除标识 1:删除")
     private String delflag;
 
-    private String type;
-
-    private String address;
-
-    private String form;
-
-    private String audit;
-
-    private String draft;
-
-    private String numreply;
-
-    private String numstart;
-
-    private String numlike;
-
-    private String attachGroupId;
-
-    private List<ArticleReply> articleReplyList;
 
 }
