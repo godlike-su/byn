@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Api(value = "文章评论回复操作", tags = "文章评论回复操作")
-@RequestMapping("${byn.mapping.name}/article/articleReply")
+@RequestMapping("/${byn.mapping.name}/${byn.mapping.prefix}/articleReply")
 public class ArticleReplyController {
 
     @Autowired

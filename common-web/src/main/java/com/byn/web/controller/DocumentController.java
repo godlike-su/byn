@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RestController
 @Api(value = "文件操作", tags = "文件操作")
-@RequestMapping("${byn.mapping.name}/web/document")
+@RequestMapping("/${byn.mapping.name}/${byn.mapping.prefix}/document")
 public class DocumentController {
 
     @Autowired

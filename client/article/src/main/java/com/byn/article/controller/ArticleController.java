@@ -30,7 +30,7 @@ import java.util.List;
  */
 @RestController
 @Api(value = "文章操作", tags = "文章操作")
-@RequestMapping("${byn.mapping.name}/article/article")
+@RequestMapping("/${byn.mapping.name}/${byn.mapping.prefix}/article")
 public class ArticleController {
 
     @Autowired

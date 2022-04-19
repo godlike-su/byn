@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Api(value = "登录、注销", tags = "登录")
-@RequestMapping("${byn.mapping.name}/web/login")
+@RequestMapping("/${byn.mapping.name}/${byn.mapping.prefix}/login")
 public class LoginController {
 
     @Autowired
