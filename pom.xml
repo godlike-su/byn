@@ -17,6 +17,7 @@
         <module>common-web</module>
         <module>client/sartup</module>
         <module>openfeign</module>
+        <module>redis</module>
     </modules>
 
     <properties>
@@ -39,6 +40,7 @@
         <validation.version>2.0.1.Final</validation.version>
         <swagger-bootstrap-ui.version>1.9.3</swagger-bootstrap-ui.version>
         <commons-lang3.version>3.4</commons-lang3.version>
+        <commons-pool2.version>2.9.0</commons-pool2.version>
     </properties>
 
     <dependencyManagement>

@@ -29,7 +29,7 @@ public class RedisConfig {
      * 方式二：String类型的序列化方式
      */
     @Bean
-    public RedisTemplate<String, Object> redisTemplate1(RedisConnectionFactory factory)
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory)
             throws UnknownHostException {
         //我们为了开发方便，直接使用<String, Object>类型
         RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
