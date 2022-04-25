@@ -8,7 +8,7 @@ ribbon:
 # 打印sql，仅限开发环境
 logging:
   level:
-    com.aspire.eaop.apict.*.mapper.*: debug
+    com.byn.web.*.mapper.*: debug
 # mybatis
 mybatis:
   configuration:
@@ -23,3 +23,4 @@ pagehelper:
   reasonable: true
   # page-size-zero：默认值为 false，当该参数设置为 true 时，如果 pageSize=0 或者 RowBounds.limit = 0 就会查询出全部的结果
   page-size-zero: true
+

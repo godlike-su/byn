@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import org.springframework.cache.annotation.CachingConfigurerSupport;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-
-import java.net.UnknownHostException;
 
 /**
  * @Author: `sujinwang`
@@ -20,7 +20,8 @@ import java.net.UnknownHostException;
  * @Description:
  */
 @Configuration //告诉Spring这是一个配置类
-public class RedisConfig {
+@EnableCaching //开启注解
+public class RedisConfig extends CachingConfigurerSupport {
     /**
      * 下面自定义了一个redisTemplate
      * -->分别创建了两种序列化解析方式，来替换运来的JDK序列化解析方式
@@ -28,10 +29,9 @@ public class RedisConfig {
      * 方式二：String类型的序列化方式
      */
     @Bean
-    public RedisTemplate<String, Object> redisTemplate1(RedisConnectionFactory factory)
-            throws UnknownHostException {
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
         //我们为了开发方便，直接使用<String, Object>类型
-        RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
         /**
          * 1. 方式一：创建Json的序列化方式
@@ -51,4 +51,72 @@ public class RedisConfig {
         jackson2JsonRedisSerializer.setObjectMapper(om);
         return template;
     }
+/*
+
+    */
+/**
+     * 对hash类型的数据操作
+     *
+     * @param redisTemplate
+     * @return
+     *//*
+
+    @Bean
+    public HashOperations<String, String, Object> hashOperations(RedisTemplate<String, Object> redisTemplate) {
+        return redisTemplate.opsForHash();
+    }
+
+    */
+/**
+     * 对redis字符串类型数据操作
+     *
+     * @param redisTemplate
+     * @return
+     *//*
+
+    @Bean
+    public ValueOperations<String, Object> valueOperations(RedisTemplate<String, Object> redisTemplate) {
+        return redisTemplate.opsForValue();
+    }
+
+    */
+/**
+     * 对链表类型的数据操作
+     *
+     * @param redisTemplate
+     * @return
+     *//*
+
+    @Bean
+    public ListOperations<String, Object> listOperations(RedisTemplate<String, Object> redisTemplate) {
+        return redisTemplate.opsForList();
+    }
+
+    */
+/**
+     * 对无序集合类型的数据操作
+     *
+     * @param redisTemplate
+     * @return
+     *//*
+
+    @Bean
+    public SetOperations<String, Object> setOperations(RedisTemplate<String, Object> redisTemplate) {
+        return redisTemplate.opsForSet();
+    }
+
+    */
+/**
+     * 对有序集合类型的数据操作
+     *
+     * @param redisTemplate
+     * @return
+     *//*
+
+    @Bean
+    public ZSetOperations<String, Object> zSetOperations(RedisTemplate<String, Object> redisTemplate) {
+        return redisTemplate.opsForZSet();
+    }
+*/
+
 }

@@ -10,6 +10,7 @@ import com.github.pagehelper.util.StringUtil;
 import com.result.ErrorResult;
 import com.result.ReturnStatus;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -66,6 +67,9 @@ public class GatewayFilterConfig implements GlobalFilter, Ordered {
     @Value("${jwt.session}")
     private String session;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     private static final String BYN_AUTHORIZATION = "byn_authorization";
     private static final long TIMEOUT_SECOND = 86400;
 
@@ -111,7 +115,6 @@ public class GatewayFilterConfig implements GlobalFilter, Ordered {
             return null;
         }
         // 从redis中取出token
-        RedisUtil redisUtil = new RedisUtil();
         Object hget = redisUtil.hget(BYN_AUTHORIZATION, token);
         if (ObjectUtils.isEmpty(hget)) {
             return null;

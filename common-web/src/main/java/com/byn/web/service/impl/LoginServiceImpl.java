@@ -70,6 +70,9 @@ public class LoginServiceImpl implements LoginService {
     @Value("${jwt.userName}")
     private String userName;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     private static final String BYN_AUTHORIZATION = "byn_authorization";
     private static final long TIMEOUT_SECOND = 86400;
 
@@ -95,7 +98,7 @@ public class LoginServiceImpl implements LoginService {
         String token = JWTUtil.createToken(map, tokenKey.getBytes());
         String uuid = IdUtil.randomUUID();
         // 将token存入redis
-        RedisUtil redisUtil = new RedisUtil();
+
         redisUtil.hset(BYN_AUTHORIZATION, uuid, token, TIMEOUT_SECOND);
         return uuid;
     }
@@ -123,7 +126,6 @@ public class LoginServiceImpl implements LoginService {
          */
         String wxAppid = jsonObject.getString("openid");
         String sessionKey = jsonObject.getString("session_key");
-        RedisUtil redisUtil = new RedisUtil();
         User user = userMapper.loadUserByWxAppid(wxAppid);
         Map<String, Object> map = new HashMap<>();
         // 查询不到用户
