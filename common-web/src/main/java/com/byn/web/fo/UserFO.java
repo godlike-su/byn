@@ -19,6 +19,8 @@ public class UserFO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty(value = "用户id")
+    private String userId;
     @ApiModelProperty(value = "用户名")
     private String userName;
     @ApiModelProperty(value = "性别")

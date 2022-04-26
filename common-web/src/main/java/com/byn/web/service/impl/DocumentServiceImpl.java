@@ -5,6 +5,7 @@ import cn.hutool.core.util.IdUtil;
 import com.byn.common.exception.DataNullException;
 import com.byn.common.exception.GenerallyeException;
 import com.byn.common.exception.ParamerException;
+import com.byn.common.util.UrlParse;
 import com.byn.web.entity.FileUpload;
 import com.byn.web.fo.DownloadFileFo;
 import com.byn.web.mapper.FileUploadMapper;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * @Author: `sujinwang`
@@ -37,7 +40,7 @@ public class DocumentServiceImpl implements DocumentService {
     @Autowired
     private FileUploadMapper fileUploadMapper;
 
-//    private final String absoluteUrl = "../file/";
+    //    private final String absoluteUrl = "../file/";
     @Value("${file.uploadFolder}")
     private String absoluteUrl;
 
@@ -47,6 +50,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public String uploadFile(MultipartFile file, String used) {
         return uploadFileUrl(file, used);
     }
@@ -69,6 +73,44 @@ public class DocumentServiceImpl implements DocumentService {
         // 强制打不开，下载
         response.setContentType("application/octet-stream;charset=utf-8");
         response.addHeader("Content-Disposition", "attachment;fileName=" + filename);
+        byte[] buffer = new byte[1024];
+        try (FileInputStream fis = new FileInputStream(file);
+             BufferedInputStream bis = new BufferedInputStream(fis)) {
+            OutputStream os = response.getOutputStream();
+
+            int i = bis.read(buffer);
+            while (i != -1) {
+                os.write(buffer, 0, i);
+                i = bis.read(buffer);
+            }
+        } catch (Exception e) {
+            log.error("下载文件出错:", e);
+            throw new GenerallyeException("下载文件出错!");
+        }
+    }
+
+    @Override
+    public void downloadFileByImage(String attachGroupId, HttpServletResponse response) {
+        // 根据文件id查找文件信息
+        FileUpload fileUpload = fileUploadMapper.selectByAttachGroupId(attachGroupId);
+        if (ObjectUtils.isEmpty(fileUpload)) {
+            throw new ParamerException("查找不到该文件！");
+        }
+        File file = new File(absoluteUrl + fileUpload.getUrl() + fileUpload.getProfilx());
+        if (!file.exists()) {
+            throw new DataNullException("该文件不存在！");
+        }
+
+        String filename = filenameEncoding(fileUpload.getName());
+        // 告知浏览器文件的大小
+        response.addHeader("Content-Length", "" + file.length());
+        // 设置对应文件的头文件
+        UrlParse urlParse = new UrlParse();
+        String suffix = urlParse.urlSuffix(filename);
+        response.setContentType(urlParse.getContentType(suffix));
+        response.addHeader("Content-Disposition", "attachment;fileName=" + filename);
+        response.addHeader("Pargam", "no-cache");
+        response.addHeader("Cache-Control", "no-cache");
         byte[] buffer = new byte[1024];
         try (FileInputStream fis = new FileInputStream(file);
              BufferedInputStream bis = new BufferedInputStream(fis)) {
@@ -125,15 +167,15 @@ public class DocumentServiceImpl implements DocumentService {
      */
     private String uploadFileUrl(MultipartFile file, String used) {
         String format = DateUtil.format(new Date(), "yyyyMMdd");
-        String filePath = format + "/";
+        String filePath;
         switch (used) {
-            case "1":
+            case "0":
                 filePath = "thumb/" + format + "/";
                 break;
-            case "2":
+            case "1":
                 filePath = "analysis/" + format + "/";
                 break;
-            case "3":
+            default:
                 filePath = "other/" + format + "/";
                 break;
         }
@@ -141,12 +183,12 @@ public class DocumentServiceImpl implements DocumentService {
             return "上传失败，请选择文件";
         }
         // 获取文件类型
-        String mimeType = file.getContentType();
+        String mimeType = Optional.ofNullable(file.getContentType()).orElse("");
+        fileModelVertify(mimeType);
         // 获取文件后缀
-        String fileName;
+        String fileName = Optional.ofNullable(file.getOriginalFilename()).orElse("");
         String profilx = "";
         try {
-            fileName = file.getOriginalFilename();
             // 获取文件名后缀 .jpg .png
             int i = fileName.lastIndexOf(".");
             if (i != -1) {
@@ -207,5 +249,16 @@ public class DocumentServiceImpl implements DocumentService {
             throw new GenerallyeException("解析文件名出错!");
         }
 
+    }
+
+    private void fileModelVertify(String mimeTyp) {
+        if (mimeTyp.equals("image/jpeg")
+                || mimeTyp.equals("image/png")
+                || mimeTyp.equals("video/mp4")
+                || mimeTyp.equals("image/gif")) {
+
+        } else {
+            throw new GenerallyeException("文件只允许jpg、jpeg、gif、mp4上传。 mineType错误: " + mimeTyp);
+        }
     }
 }

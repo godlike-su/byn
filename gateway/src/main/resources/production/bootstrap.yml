@@ -1,0 +1,26 @@
+# 此处更改不得上传
+spring:
+  profile:
+    active: PRODUCT
+  application:
+    name: byn-gateway
+  cloud:
+    nacos:
+      # 指定nacos访问地址
+      discovery:
+        weight: 1 #权重
+        server-addr: 106.55.254.121:8848
+        namespace: ed565160-577e-4de1-80ea-9aa5b0d1ab7b #命名空间
+      config:
+        server-addr: 106.55.254.121:8848 #Nacos作为配置中心地址
+        file-extension: yaml #指定yaml格式的配置
+        group: PRODUCT # 读取指定分组下的配置文件
+        namespace: ed565160-577e-4de1-80ea-9aa5b0d1ab7b #命名空间
+# log
+logging.level.com.byn.gateway: error
+
+server:
+  port: 5001
+  servlet:
+    context-path: /
+

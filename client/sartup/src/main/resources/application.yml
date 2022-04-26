@@ -1,0 +1,25 @@
+#设置feign 客户端超时时间（openFeign默认支持ribbon）
+ribbon:
+  #指的是建立连接所用的时间，适用于网络状况正常的情况下，两端连接所用的时间 5s
+  ReadTimeout: 5000
+  #指的是建立连接后从服务器读取到可用资源所用的时间
+  ConnectTimeout: 5000
+
+# 打印sql，仅限开发环境
+logging:
+  level:
+    com.aspire.eaop.apict.*.mapper.*: debug
+# mybatis
+mybatis:
+  configuration:
+    #org.apache.ibatis.logging.stdout.StdOutImpl 控制台打印sql语句方便调试sql语句执行错误
+    #org.apache.ibatis.logging.log4j2.Log4j2Impl:这个不在控制台打印查询结果,但是在log4j中打印
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+pagehelper:
+  supportMethodsArguments: true
+  # helperDialect：指定分页插件使用哪种方言
+  helperDialect: mysql
+  # reasonable：分页合理化参数，默认值为false。当该参数设置为 true 时，pageNum<=0 时会查询第一页， pageNum>pages（超过总数时），会查询最后一页
+  reasonable: true
+  # page-size-zero：默认值为 false，当该参数设置为 true 时，如果 pageSize=0 或者 RowBounds.limit = 0 就会查询出全部的结果
+  page-size-zero: true

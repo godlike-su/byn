@@ -12,11 +12,12 @@
     <modules>
         <module>webReturn</module>
         <module>gateway</module>
-        <module>client</module>
+        <module>client/article</module>
         <module>common</module>
         <module>common-web</module>
+        <module>client/sartup</module>
         <module>openfeign</module>
-        <module>sartup</module>
+        <module>client</module>
     </modules>
 
     <properties>
@@ -39,6 +40,9 @@
         <validation.version>2.0.1.Final</validation.version>
         <swagger-bootstrap-ui.version>1.9.3</swagger-bootstrap-ui.version>
         <commons-lang3.version>3.4</commons-lang3.version>
+        <commons-pool2.version>2.9.0</commons-pool2.version>
+        <redis.version>2.2.6.RELEASE</redis.version>
+        <jedis.version>2.9.0</jedis.version>
     </properties>
 
     <dependencyManagement>
@@ -99,23 +103,8 @@
             <scope>provided</scope>
             <version>6.0.16.Final</version>
         </dependency>
+
     </dependencies>
 
-<!--    <build>-->
-<!--        <plugins>-->
-<!--            <plugin>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <excludes>-->
-<!--                        <exclude>-->
-<!--                            <groupId>org.projectlombok</groupId>-->
-<!--                            <artifactId>lombok</artifactId>-->
-<!--                        </exclude>-->
-<!--                    </excludes>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--        </plugins>-->
-<!--    </build>-->
 
 </project>

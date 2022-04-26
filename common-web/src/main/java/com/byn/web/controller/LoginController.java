@@ -2,7 +2,6 @@ package com.byn.web.controller;
 
 import com.byn.common.session.entity.SessionUserDetail;
 import com.byn.common.session.service.SessionUser;
-import com.byn.web.entity.User;
 import com.byn.web.fo.LoginFo;
 import com.byn.web.fo.UserFO;
 import com.byn.web.fo.WXloginFo;
@@ -29,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Api(value = "登录、注销", tags = "登录")
-@RequestMapping("${byn.mapping.name}/web/login")
+@RequestMapping("/${byn.mapping.name}/${byn.mapping.prefix}/login")
 public class LoginController {
 
     @Autowired
@@ -45,9 +44,9 @@ public class LoginController {
 
     @PostMapping("/login")
     @ApiOperation(value = "普通登录")
-    public MessageResult login(@RequestBody @Validated LoginFo loginFo) {
+    public SingleResult login(@RequestBody @Validated LoginFo loginFo) {
         String login = loginService.login(loginFo);
-        return new MessageResult(login);
+        return new SingleResult(login);
     }
 
     @PostMapping("/wxLogin")

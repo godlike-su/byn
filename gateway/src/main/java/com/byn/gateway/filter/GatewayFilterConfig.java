@@ -3,7 +3,6 @@ package com.byn.gateway.filter;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTPayload;
 import cn.hutool.jwt.JWTUtil;
-import com.byn.gateway.dao.UserDao;
 import com.byn.gateway.entity.User;
 import com.byn.gateway.util.JwtVerity;
 import com.byn.gateway.util.RedisUtil;
@@ -38,8 +37,6 @@ import java.util.function.Consumer;
 @Component
 @Slf4j
 public class GatewayFilterConfig implements GlobalFilter, Ordered {
-    @Autowired
-    private UserDao userDao;
 
     @Value("${gateway.white.url}")
     private String[] whiteUrl;
@@ -69,6 +66,9 @@ public class GatewayFilterConfig implements GlobalFilter, Ordered {
      */
     @Value("${jwt.session}")
     private String session;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     private static final String BYN_AUTHORIZATION = "byn_authorization";
     private static final long TIMEOUT_SECOND = 86400;
@@ -115,7 +115,6 @@ public class GatewayFilterConfig implements GlobalFilter, Ordered {
             return null;
         }
         // 从redis中取出token
-        RedisUtil redisUtil = new RedisUtil();
         Object hget = redisUtil.hget(BYN_AUTHORIZATION, token);
         if (ObjectUtils.isEmpty(hget)) {
             return null;
@@ -134,20 +133,28 @@ public class GatewayFilterConfig implements GlobalFilter, Ordered {
     private User getUser(String jwtToken) {
         // 判断路径是否需要用户权限，暂时未做，也可以判断redis是否存有该key
         // 解析token，判断是否超时了
-        JwtVerity jwtVerity = new JwtVerity();
-        boolean verity = jwtVerity.verity(tokenKey, jwtToken);
-        if (!verity) {
+        try {
+            JwtVerity jwtVerity = new JwtVerity();
+            boolean verity = jwtVerity.verity(tokenKey, jwtToken);
+            if (!verity) {
+                return null;
+            }
+            JWT jwt = JWTUtil.parseToken(jwtToken);
+            JWTPayload payload = jwt.getPayload();
+            String id = (String) payload.getClaim(userId);
+            String name = (String) payload.getClaim(userName);
+            // 根据取出userId，去数据库或redis查询，是否有该数据
+            User user = new User();
+            user.setUserId(id);
+            user.setUserName(name);
+            if (ObjectUtils.isEmpty(user)) {
+                return null;
+            }
+            return user;
+        } catch (Exception e) {
+            log.error("jwt解析错误: ", e);
             return null;
         }
-        JWT jwt = JWTUtil.parseToken(jwtToken);
-        JWTPayload payload = jwt.getPayload();
-        String id = (String) payload.getClaim(userId);
-        // 根据取出userId，去数据库或redis查询，是否有该数据
-        User user = userDao.loadUserByUserId(id);
-        if (ObjectUtils.isEmpty(user)) {
-            return null;
-        }
-        return user;
     }
 
 

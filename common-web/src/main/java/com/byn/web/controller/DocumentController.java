@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RestController
 @Api(value = "文件操作", tags = "文件操作")
-@RequestMapping("${byn.mapping.name}/web/document")
+@RequestMapping("/${byn.mapping.name}/${byn.mapping.prefix}/document")
 public class DocumentController {
 
     @Autowired
@@ -49,11 +49,19 @@ public class DocumentController {
     }
 
     @GetMapping("/downloadFile")
-    @ApiOperation(value = "文件下载")
+    @ApiOperation(value = "文件下载，以文件的形式下载")
     public void downloadFile(@RequestParam("attachGroupId") String attachGroupId
             , HttpServletResponse response) {
         documentService.downloadFile(attachGroupId, response);
     }
+
+    @GetMapping("/downloadFileByImage")
+    @ApiOperation(value = "文件下载，以图片形式显示")
+    public void downloadFileByImage(@RequestParam("attachGroupId") String attachGroupId
+            , HttpServletResponse response) {
+        documentService.downloadFileByImage(attachGroupId, response);
+    }
+
 
     @PostMapping("/clearFile")
     @ApiOperation(value = "删除文件")
