@@ -1,5 +1,6 @@
 package com.byn.web.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @Description:
  */
 @Component
+@Slf4j
 public class RedisUtil {
     //以下@Autowired导入的是我们自己写的RedisTemplate配置类
     @Autowired

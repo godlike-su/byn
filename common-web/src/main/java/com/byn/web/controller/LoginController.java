@@ -2,7 +2,6 @@ package com.byn.web.controller;
 
 import com.byn.common.session.entity.SessionUserDetail;
 import com.byn.common.session.service.SessionUser;
-import com.byn.web.entity.User;
 import com.byn.web.fo.LoginFo;
 import com.byn.web.fo.UserFO;
 import com.byn.web.fo.WXloginFo;

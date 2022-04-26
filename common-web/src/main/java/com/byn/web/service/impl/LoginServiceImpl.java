@@ -98,7 +98,6 @@ public class LoginServiceImpl implements LoginService {
         String token = JWTUtil.createToken(map, tokenKey.getBytes());
         String uuid = IdUtil.randomUUID();
         // 将token存入redis
-
         redisUtil.hset(BYN_AUTHORIZATION, uuid, token, TIMEOUT_SECOND);
         return uuid;
     }

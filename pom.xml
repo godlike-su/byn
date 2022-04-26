@@ -17,6 +17,7 @@
         <module>common-web</module>
         <module>client/sartup</module>
         <module>openfeign</module>
+        <module>client</module>
     </modules>
 
     <properties>

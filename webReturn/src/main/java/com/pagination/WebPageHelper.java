@@ -2,11 +2,11 @@ package com.pagination;
 
 import com.github.pagehelper.PageHelper;
 
-public class WebbasPageHelper extends PageHelper {
+public class WebPageHelper extends PageHelper {
     public static final int DEFAULT_PAGE_NUM = 1;
     public static final int DEFAULT_PAGE_SIZE = 10;
 
-    public WebbasPageHelper() {
+    public WebPageHelper() {
     }
 
     public static void startPage(PageParam pageParam) {
