@@ -10,7 +10,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>webReturn</module>
+        <module>WebReturn</module>
         <module>gateway</module>
         <module>client/article</module>
         <module>common</module>
