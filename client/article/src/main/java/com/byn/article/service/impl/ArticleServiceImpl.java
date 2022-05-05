@@ -106,7 +106,6 @@ public class ArticleServiceImpl implements ArticleService {
         article.setArticleid(String.valueOf(SnowFlakeUtil.getId()));
         article.setCat1(ArticleEnum.CAT1_HOLE.getKey());
         article.setTimeupdate(new Date());
-        article.setCat1("1");
         int num = articleMapper.insertSelective(article);
         if (num != 1) {
             throw new GenerallyeException("新增文章树洞失败!");
